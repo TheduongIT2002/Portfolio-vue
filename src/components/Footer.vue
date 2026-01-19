@@ -52,10 +52,11 @@ export default {
 
 <style scoped>
 .footer {
-  background: var(--text-color);
-  color: white;
+  background: var(--bg-color);
+  color: var(--text-light);
   padding: 3rem 0 1rem;
   margin-top: 4rem;
+  border-top: 1px solid rgba(51, 65, 85, 0.5);
 }
 
 .footer-content {
@@ -80,7 +81,7 @@ export default {
 }
 
 .footer-section p {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-light);
   line-height: 1.8;
 }
 
@@ -93,7 +94,7 @@ export default {
 }
 
 .footer-section ul li a {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-light);
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -109,10 +110,10 @@ export default {
 }
 
 .social-links a {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-light);
   text-decoration: none;
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(51, 65, 85, 0.8);
   border-radius: 5px;
   transition: all 0.3s ease;
 }
@@ -120,14 +121,14 @@ export default {
 .social-links a:hover {
   background: var(--primary-color);
   border-color: var(--primary-color);
-  color: white;
+  color: #0b1220;
 }
 
 .footer-bottom {
   text-align: center;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(51, 65, 85, 0.4);
+  color: rgba(148, 163, 184, 0.8);
 }
 
 @media (max-width: 768px) {
