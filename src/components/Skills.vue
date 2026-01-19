@@ -99,10 +99,11 @@ export default {
 }
 
 .skill-category {
-  background: white;
+  background: rgba(17, 24, 39, 0.9);
   padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
 }
 
 .skill-category h3 {
@@ -142,7 +143,7 @@ export default {
 
 .skill-bar {
   height: 8px;
-  background: var(--bg-light);
+  background: rgba(51, 65, 85, 0.6);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -162,17 +163,17 @@ export default {
 
 .skill-tag {
   padding: 0.5rem 1rem;
-  background: var(--bg-light);
+  background: rgba(17, 24, 39, 0.9);
   border-radius: 20px;
   color: var(--text-color);
   font-size: 0.9rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(51, 65, 85, 0.8);
   transition: all 0.3s ease;
 }
 
 .skill-tag:hover {
   background: var(--primary-color);
-  color: white;
+  color: #0b1220;
   border-color: var(--primary-color);
   transform: translateY(-2px);
 }

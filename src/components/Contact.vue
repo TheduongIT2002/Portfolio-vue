@@ -1,124 +1,66 @@
 <template>
   <section id="contact" class="contact section">
     <div class="container">
-      <h2 class="section-title">Liên hệ</h2>
+      <div class="section-header">
+        <h2 class="section-title">Liên hệ</h2>
+      </div>
       <p class="section-subtitle">
-        Hãy liên hệ với tôi nếu bạn có bất kỳ câu hỏi nào
+        Luôn mở cho cơ hội mới. Cứ nhắn một dòng, tôi sẽ phản hồi sớm nhất.
       </p>
       
-      <div class="contact-content">
-        <!-- Thông tin liên hệ -->
-        <div class="contact-info">
-          <h3>Thông tin liên hệ</h3>
-          <p>
-            Tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn. Hãy gửi tin nhắn cho tôi 
-            hoặc liên hệ qua các kênh sau:
+      <div class="contact-grid">
+        <!-- Cột thông tin + social -->
+        <div class="contact-panel">
+          <div class="panel-title">Kết nối với tôi</div>
+          <p class="panel-desc">
+            Email, mạng xã hội, hoặc tải CV bằng QR — chọn kênh bạn thích nhất.
           </p>
-          
-          <div class="contact-items">
-            <div class="contact-item">
-              <div class="contact-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-              </div>
-              <div>
-                <h4>Email</h4>
-                <p>your.email@example.com</p>
-              </div>
-            </div>
-            
-            <div class="contact-item">
-              <div class="contact-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
-                </svg>
-              </div>
-              <div>
-                <h4>Điện thoại</h4>
-                <p>+84 xxx xxx xxx</p>
-              </div>
-            </div>
-            
-            <div class="contact-item">
-              <div class="contact-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <div>
-                <h4>Địa chỉ</h4>
-                <p>Việt Nam</p>
-              </div>
-            </div>
+
+          <div class="social-row">
+            <a v-for="social in socials" :key="social.name" href="#" class="social-btn">
+              <img :src="social.icon" :alt="social.name" />
+            </a>
           </div>
-          
-          <!-- Social links -->
-          <div class="social-media">
-            <h4>Theo dõi tôi</h4>
-            <div class="social-icons">
-              <a href="#" aria-label="Facebook" class="social-icon">
-                Facebook
-              </a>
-              <a href="#" aria-label="GitHub" class="social-icon">
-                GitHub
-              </a>
-              <a href="#" aria-label="LinkedIn" class="social-icon">
-                LinkedIn
-              </a>
+
+          <div class="cv-card">
+            <div class="qr-box">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/duong-dev" alt="QR CV">
+            </div>
+            <div class="cv-info">
+              <p class="cv-text">Quét QR để xem CV hoặc</p>
+              <button class="cv-btn">
+                <span class="material-symbols-outlined">download</span>
+                Tải CV PDF
+              </button>
             </div>
           </div>
         </div>
-        
-        <!-- Form liên hệ -->
-        <div class="contact-form-wrapper">
+
+        <!-- Form -->
+        <div class="form-panel">
           <form class="contact-form" @submit.prevent="handleSubmit">
             <div class="form-group">
+              <input type="text" id="name" v-model="form.name" required placeholder=" " />
               <label for="name">Họ tên *</label>
-              <input 
-                type="text" 
-                id="name" 
-                v-model="form.name"
-                required
-                placeholder="Nhập họ tên của bạn"
-              />
             </div>
-            
+
             <div class="form-group">
+              <input type="email" id="email" v-model="form.email" required placeholder=" " />
               <label for="email">Email *</label>
-              <input 
-                type="email" 
-                id="email" 
-                v-model="form.email"
-                required
-                placeholder="your.email@example.com"
-              />
             </div>
-            
+
             <div class="form-group">
+              <input type="text" id="subject" v-model="form.subject" required placeholder=" " />
               <label for="subject">Chủ đề *</label>
-              <input 
-                type="text" 
-                id="subject" 
-                v-model="form.subject"
-                required
-                placeholder="Chủ đề tin nhắn"
-              />
             </div>
-            
+
             <div class="form-group">
+              <textarea id="message" v-model="form.message" rows="4" required placeholder=" "></textarea>
               <label for="message">Tin nhắn *</label>
-              <textarea 
-                id="message" 
-                v-model="form.message"
-                required
-                rows="5"
-                placeholder="Nhập tin nhắn của bạn..."
-              ></textarea>
             </div>
-            
-            <button type="submit" class="btn btn-primary">
+
+            <button type="submit" class="btn btn-primary submit-btn">
+              <span class="material-symbols-outlined">send</span>
               Gửi tin nhắn
             </button>
           </form>
@@ -139,7 +81,13 @@ export default {
         email: '',
         subject: '',
         message: ''
-      }
+      },
+      // Social icons
+      socials: [
+        { name: 'Github', icon: 'https://img.icons8.com/ios-filled/24/ffffff/github.png' },
+        { name: 'LinkedIn', icon: 'https://img.icons8.com/ios-filled/24/ffffff/linkedin.png' },
+        { name: 'Twitter', icon: 'https://img.icons8.com/ios-filled/24/ffffff/twitter.png' }
+      ]
     }
   },
   methods: {
@@ -163,146 +111,212 @@ export default {
 
 <style scoped>
 .contact {
-  background: var(--bg-light);
+  background: var(--bg-color);
 }
 
-.contact-content {
+.contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 4rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
 }
 
-.contact-info h3 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+.contact-panel,
+.form-panel {
+  background: rgba(17, 24, 39, 0.95);
+  border: 1px solid rgba(51, 65, 85, 0.85);
+  border-radius: 18px;
+  padding: 1.6rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-panel::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  background: rgba(56, 189, 248, 0.08);
+  filter: blur(30px);
+  border-radius: 50%;
+}
+
+.panel-title {
   color: var(--text-color);
+  font-weight: 800;
+  font-size: 1.3rem;
 }
 
-.contact-info > p {
+.panel-desc {
+  margin: 10px 0 18px;
   color: var(--text-light);
-  line-height: 1.8;
-  margin-bottom: 2rem;
+  line-height: 1.7;
 }
 
-.contact-items {
+.social-row {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 3rem;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.contact-item {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-}
-
-.contact-icon {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  border-radius: 10px;
-  display: flex;
+.social-btn {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  transition: all 0.25s ease;
 }
 
-.contact-icon svg {
-  width: 24px;
-  height: 24px;
-  stroke-width: 2;
-  color: white;
-}
-
-.contact-item h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0.25rem;
-  color: var(--text-color);
-}
-
-.contact-item p {
-  color: var(--text-light);
-}
-
-.social-media h4 {
-  margin-bottom: 1rem;
-  color: var(--text-color);
-}
-
-.social-icons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.social-icon {
-  padding: 0.75rem 1.5rem;
-  background: white;
-  color: var(--text-color);
-  text-decoration: none;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
-  font-weight: 500;
-}
-
-.social-icon:hover {
-  background: var(--primary-color);
-  color: white;
+.social-btn:hover {
   border-color: var(--primary-color);
   transform: translateY(-2px);
 }
 
-.contact-form-wrapper {
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+.cv-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  border-radius: 14px;
+}
+
+.qr-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px;
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+}
+
+.qr-box img {
+  width: 80px;
+  height: 80px;
+}
+
+.cv-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cv-text {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.cv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary-color);
+  color: #0b1220;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.cv-btn:hover {
+  transform: translateY(-1px);
+  background: var(--secondary-color);
+}
+
+.form-panel {
+  background: rgba(17, 24, 39, 0.96);
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 14px;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.form-group label {
-  font-weight: 600;
-  color: var(--text-color);
+  position: relative;
 }
 
 .form-group input,
 .form-group textarea {
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  width: 100%;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(51, 65, 85, 0.85);
+  border-radius: 12px;
+  padding: 14px 14px 14px 14px;
+  color: var(--text-color);
   font-size: 1rem;
-  font-family: inherit;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.form-group label {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  background: transparent;
+  padding: 0 4px;
+  transition: all 0.2s ease;
+  pointer-events: none;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.16);
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
+.form-group input:not(:placeholder-shown) + label,
+.form-group textarea:not(:placeholder-shown) + label,
+.form-group input:focus + label,
+.form-group textarea:focus + label {
+  top: 10px;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+}
+
+.submit-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
 }
 
 /* Responsive */
-@media (max-width: 968px) {
-  .contact-content {
+@media (max-width: 900px) {
+  .contact-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-panel,
+  .form-panel {
+    padding: 1.2rem;
+  }
+
+  .social-row {
+    gap: 10px;
   }
 }
 </style>

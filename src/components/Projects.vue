@@ -1,10 +1,10 @@
 <template>
   <section id="projects" class="projects section">
     <div class="container">
-      <h2 class="section-title">Dự án</h2>
-      <p class="section-subtitle">
-        Một số dự án tôi đã thực hiện
-      </p>
+      <div class="section-header">
+        <h2 class="section-title">Dự án nổi bật</h2>
+      </div>
+      <p class="section-subtitle">Một vài sản phẩm tôi đã xây dựng gần đây.</p>
       
       <div class="projects-grid">
         <div 
@@ -13,31 +13,25 @@
           :key="project.id"
         >
           <div class="project-image">
-            <div class="image-placeholder">
-              <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="300" fill="#6366f1" opacity="0.1"/>
-                <rect x="50" y="50" width="300" height="200" fill="#6366f1" opacity="0.3"/>
-                <circle cx="200" cy="150" r="50" fill="#6366f1"/>
-              </svg>
-            </div>
-            <div class="project-overlay">
-              <a :href="project.demo" target="_blank" class="project-link" v-if="project.demo">
-                Xem demo
+            <img :src="project.image" :alt="project.title" />
+            <div class="project-overlay"></div>
+            <div class="project-actions">
+              <a v-if="project.github" :href="project.github" target="_blank" class="icon-btn" aria-label="GitHub">
+                <span class="material-symbols-outlined">code</span>
               </a>
-              <a :href="project.github" target="_blank" class="project-link" v-if="project.github">
-                GitHub
+              <a v-if="project.demo" :href="project.demo" target="_blank" class="icon-btn" aria-label="Demo">
+                <span class="material-symbols-outlined">open_in_new</span>
               </a>
             </div>
           </div>
           <div class="project-content">
-            <h3 class="project-title">{{ project.title }}</h3>
+            <div class="project-top">
+              <h3 class="project-title">{{ project.title }}</h3>
+              <span class="project-year">{{ project.year }}</span>
+            </div>
             <p class="project-description">{{ project.description }}</p>
             <div class="project-tags">
-              <span 
-                class="project-tag" 
-                v-for="tag in project.tags" 
-                :key="tag"
-              >
+              <span class="project-tag" v-for="tag in project.tags" :key="tag">
                 {{ tag }}
               </span>
             </div>
@@ -57,51 +51,33 @@ export default {
       projects: [
         {
           id: 1,
-          title: 'Website E-commerce',
-          description: 'Website bán hàng trực tuyến với đầy đủ tính năng giỏ hàng, thanh toán và quản lý đơn hàng.',
-          tags: ['Vue.js', 'Laravel', 'MySQL'],
+          title: 'E-Commerce API',
+          description: 'REST API multi-vendor với auth JWT, cổng thanh toán và cập nhật tồn kho realtime.',
+          tags: ['Laravel', 'MySQL', 'Redis'],
           demo: '#',
-          github: '#'
+          github: '#',
+          image: 'https://picsum.photos/seed/shop-api/600/400',
+          year: '2024'
         },
         {
           id: 2,
-          title: 'Hệ thống Quản lý',
-          description: 'Hệ thống quản lý với dashboard, báo cáo và phân quyền người dùng.',
-          tags: ['Vue.js', 'Laravel', 'REST API'],
+          title: 'Real-time Chat App',
+          description: 'Ứng dụng chat realtime với Vue 3, Laravel Echo, hỗ trợ channel, file sharing, presence.',
+          tags: ['Vue 3', 'Pusher', 'Tailwind'],
           demo: '#',
-          github: '#'
+          github: '#',
+          image: 'https://picsum.photos/seed/chat-app/600/400',
+          year: '2023'
         },
         {
           id: 3,
-          title: 'Portfolio Website',
-          description: 'Website giới thiệu cá nhân với thiết kế hiện đại và responsive.',
-          tags: ['Vue.js', 'CSS3', 'Vite'],
+          title: 'TaskFlow SaaS',
+          description: 'Quản lý dự án kiểu kanban, chấm công và báo cáo tự động, build với Inertia.js.',
+          tags: ['Laravel', 'Inertia', 'React'],
           demo: '#',
-          github: '#'
-        },
-        {
-          id: 4,
-          title: 'Ứng dụng Chat',
-          description: 'Ứng dụng chat real-time với WebSocket và Laravel Broadcasting.',
-          tags: ['Vue.js', 'Laravel', 'WebSocket'],
-          demo: '#',
-          github: '#'
-        },
-        {
-          id: 5,
-          title: 'Blog Platform',
-          description: 'Nền tảng blog với tính năng đăng bài, bình luận và tìm kiếm.',
-          tags: ['Vue.js', 'Laravel', 'MySQL'],
-          demo: '#',
-          github: '#'
-        },
-        {
-          id: 6,
-          title: 'Landing Page',
-          description: 'Landing page với animation và hiệu ứng đẹp mắt, tối ưu conversion.',
-          tags: ['Vue.js', 'CSS3', 'Animation'],
-          demo: '#',
-          github: '#'
+          github: '#',
+          image: 'https://picsum.photos/seed/saas/600/400',
+          year: '2023'
         }
       ]
     }
@@ -116,38 +92,40 @@ export default {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.6rem;
 }
 
 .project-card {
-  background: white;
-  border-radius: 15px;
+  background: rgba(17, 24, 39, 0.9);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.4);
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
 .project-image {
   position: relative;
-  height: 250px;
+  height: 210px;
   overflow: hidden;
-  background: var(--bg-light);
 }
 
-.image-placeholder {
+.project-image img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
-.image-placeholder svg {
-  width: 100%;
-  height: 100%;
+.project-card:hover .project-image img {
+  transform: scale(1.05);
 }
 
 .project-overlay {
@@ -156,72 +134,91 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  opacity: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.8));
+  opacity: 0.9;
   transition: opacity 0.3s ease;
 }
 
-.project-card:hover .project-overlay {
-  opacity: 1;
+.project-actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 10px;
 }
 
-.project-link {
-  padding: 0.75rem 1.5rem;
-  background: var(--primary-color);
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: 600;
-  transition: background 0.3s ease;
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  color: var(--text-color);
+  transition: all 0.25s ease;
 }
 
-.project-link:hover {
-  background: var(--secondary-color);
+.icon-btn:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
 }
 
 .project-content {
-  padding: 1.5rem;
+  padding: 1.4rem 1.5rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .project-title {
-  font-size: 1.5rem;
-  margin-bottom: 0.75rem;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: var(--text-color);
+}
+
+.project-year {
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.8);
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(51, 65, 85, 0.3);
+  border: 1px solid rgba(51, 65, 85, 0.6);
 }
 
 .project-description {
   color: var(--text-light);
   line-height: 1.6;
-  margin-bottom: 1rem;
 }
 
 .project-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .project-tag {
-  padding: 0.25rem 0.75rem;
-  background: var(--bg-light);
+  padding: 0.35rem 0.8rem;
+  background: rgba(56, 189, 248, 0.08);
   color: var(--primary-color);
-  border-radius: 15px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  border-radius: 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid rgba(56, 189, 248, 0.18);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .projects-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .project-overlay {
-    opacity: 1;
   }
 }
 </style>
