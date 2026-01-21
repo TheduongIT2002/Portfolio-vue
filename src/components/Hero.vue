@@ -208,7 +208,8 @@ export default {
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  overflow: hidden;
+  /* Cho phép badge nổi ra ngoài nhưng vẫn giữ ảnh bo tròn */
+  overflow: visible;
   border: 4px solid rgba(51, 65, 85, 0.6);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
 }
@@ -219,6 +220,8 @@ export default {
   object-fit: cover;
   filter: grayscale(0.2);
   transition: filter 0.5s ease;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .avatar-frame:hover .avatar-img {
@@ -230,7 +233,7 @@ export default {
   width: 64px;
   height: 64px;
   border-radius: 16px;
-  background: rgba(17, 24, 39, 0.9);
+  background: rgba(17, 24, 39, 0.92);
   border: 1px solid rgba(51, 65, 85, 0.9);
   display: grid;
   place-items: center;
@@ -245,13 +248,13 @@ export default {
 }
 
 .badge-laravel {
-  top: -10px;
-  right: -10px;
+  top: 12px;
+  right: 12px;
 }
 
 .badge-vue {
-  bottom: 24px;
-  left: -14px;
+  bottom: 20px;
+  left: 12px;
   animation-delay: 0.9s;
 }
 
