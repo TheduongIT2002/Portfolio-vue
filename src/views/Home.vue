@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import Hero from '../components/Hero.vue'
-import About from '../components/About.vue'
-import Skills from '../components/Skills.vue'
-import Projects from '../components/Projects.vue'
-import Contact from '../components/Contact.vue'
+import Hero from '../components/sections/Hero.vue'
+import About from '../components/sections/About.vue'
+import Skills from '../components/sections/Skills.vue'
+import Projects from '../components/sections/Projects.vue'
+import Contact from '../components/sections/Contact.vue'
 
 export default {
   name: 'Home',
