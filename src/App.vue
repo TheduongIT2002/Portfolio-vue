@@ -40,7 +40,7 @@ export default {
   methods: {
     // Xác định section đang được xem để highlight menu trên Header
     handleScroll() {
-      const sections = ['home', 'about', 'skills', 'projects', 'contact']
+      const sections = ['home', 'about', 'projects', 'contact']
       const scrollPosition = window.scrollY + 200
 
       for (const section of sections) {
