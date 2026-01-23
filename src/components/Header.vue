@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  name: 'AppHeader',
+  name: 'Header',
   props: {
     // Section đang active (được tính ở App.vue)
     activeSection: {
@@ -59,7 +59,7 @@ export default {
       navLinks: [
         { id: 'home', label: 'Trang chủ', number: '01' },
         { id: 'about', label: 'Giới thiệu', number: '02' },
-        { id: 'tech-stack', label: 'Tech Stack', number: '03' },
+        { id: 'skills', label: 'Kỹ năng', number: '03' },
         { id: 'projects', label: 'Dự án', number: '04' },
         { id: 'contact', label: 'Liên hệ', number: '05' }
       ]
