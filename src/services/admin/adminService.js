@@ -37,5 +37,46 @@ export const adminService = {
       console.error('Error fetching projects:', error)
       throw error
     }
+  },
+  
+  // Tạo project mới
+  async createProject(projectData) {
+    try {
+      const data = await apiRequest('/admin/projects', {
+        method: 'POST',
+        body: JSON.stringify(projectData)
+      })
+      return data
+    } catch (error) {
+      console.error('Error creating project:', error)
+      throw error
+    }
+  },
+  
+  // Cập nhật project
+  async updateProject(id, projectData) {
+    try {
+      const data = await apiRequest(`/admin/projects/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(projectData)
+      })
+      return data
+    } catch (error) {
+      console.error('Error updating project:', error)
+      throw error
+    }
+  },
+  
+  // Xóa project
+  async deleteProject(id) {
+    try {
+      const data = await apiRequest(`/admin/projects/${id}`, {
+        method: 'DELETE'
+      })
+      return data
+    } catch (error) {
+      console.error('Error deleting project:', error)
+      throw error
+    }
   }
 }
