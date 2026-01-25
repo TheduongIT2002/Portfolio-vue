@@ -65,6 +65,32 @@ html {
   margin-right: auto;
 }
 
+/* Hiệu ứng scroll animation (kết hợp với directive v-scroll-animate) */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+/* Khi phần tử được scroll vào viewport sẽ thêm class này */
+.scroll-animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Các hướng chuyển động tuỳ chọn */
+.scroll-animate--fade-up {
+  transform: translateY(24px);
+}
+
+.scroll-animate--fade-left {
+  transform: translateX(32px);
+}
+
+.scroll-animate--fade-right {
+  transform: translateX(-32px);
+}
+
 /* Tiêu đề kiểu "section header" (có đường kẻ phía sau) */
 .section-header {
   display: flex;

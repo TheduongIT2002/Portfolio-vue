@@ -2,8 +2,8 @@
   <section id="home" class="hero">
     <div class="hero-blob"></div>
     <div class="container hero-grid">
-      <!-- Nội dung chính -->
-      <div class="hero-text">
+      <!-- Nội dung chính (animate khi load/scroll tới) -->
+      <div class="hero-text" v-scroll-animate="'fade-up'">
         <div class="hero-badge">
           <span class="dot"></span>
           Available for freelance work
@@ -43,8 +43,8 @@
         </div>
       </div>
 
-      <!-- Ảnh avatar + badge công nghệ -->
-      <div class="hero-visual">
+      <!-- Ảnh avatar + badge công nghệ (animate từ phải sang) -->
+      <div class="hero-visual" v-scroll-animate="'fade-right'">
         <div class="avatar-frame">
           <img
             src="https://picsum.photos/seed/dev-portrait/800/800"

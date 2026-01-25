@@ -9,8 +9,8 @@
       </p>
       
       <div class="about-grid">
-        <!-- Text -->
-        <div class="about-text">
+        <!-- Text (slide nhẹ từ trái vào khi scroll) -->
+        <div class="about-text" v-scroll-animate="'fade-left'">
           <h3 class="about-heading">Full-stack Developer</h3>
           <p>
             Xin chào! Tôi là <strong class="text-strong">Dương</strong>, thích xây các sản phẩm web
@@ -29,8 +29,8 @@
           </ul>
         </div>
 
-        <!-- Code card + tech stack -->
-        <div class="about-panel">
+        <!-- Code card + tech stack (slide nhẹ từ phải vào khi scroll) -->
+        <div class="about-panel" v-scroll-animate="'fade-right'">
           <div class="code-card">
             <div class="code-card-header">
               <div class="dots">

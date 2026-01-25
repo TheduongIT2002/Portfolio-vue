@@ -40,7 +40,8 @@ export default {
   methods: {
     // Xác định section đang được xem để highlight menu trên Header
     handleScroll() {
-      const sections = ['home', 'about', 'skills', 'projects', 'contact']
+      // Danh sách id các section trên trang theo đúng thứ tự xuất hiện
+      const sections = ['home', 'about', 'tech-stack', 'projects', 'contact']
       const scrollPosition = window.scrollY + 200
 
       for (const section of sections) {
