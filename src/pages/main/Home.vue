@@ -20,11 +20,11 @@
 
 <script>
 // Import các section chính của trang Home
-import Hero from '../components/sections/Hero.vue'
-import About from '../components/sections/About.vue'
-import TechStack from '../components/sections/TechStack.vue'
-import Projects from '../components/sections/Projects.vue'
-import Contact from '../components/sections/Contact.vue'
+import Hero from '../../components/main/Hero.vue'
+import About from '../../components/main/About.vue'
+import TechStack from '../../components/main/TechStack.vue'
+import Projects from '../../components/main/Projects.vue'
+import Contact from '../../components/main/Contact.vue'
 
 export default {
   name: 'Home',
