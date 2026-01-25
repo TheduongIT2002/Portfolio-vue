@@ -9,8 +9,8 @@
       </p>
       
       <div class="contact-grid">
-        <!-- Cột thông tin + social -->
-        <div class="contact-panel">
+        <!-- Cột thông tin + social (animate từ trái) -->
+        <div class="contact-panel" v-scroll-animate="'fade-left'">
           <div class="panel-title">Kết nối với tôi</div>
           <p class="panel-desc">
             Email, mạng xã hội, hoặc tải CV bằng QR — chọn kênh bạn thích nhất.
@@ -36,8 +36,8 @@
           </div>
         </div>
 
-        <!-- Form -->
-        <div class="form-panel">
+        <!-- Form (animate từ phải) -->
+        <div class="form-panel" v-scroll-animate="'fade-right'">
           <form class="contact-form" @submit.prevent="handleSubmit">
             <div class="form-group">
               <input type="text" id="name" v-model="form.name" required placeholder=" " />

@@ -8,9 +8,10 @@
       
       <div class="projects-grid">
         <div 
-          class="project-card" 
+          class="project-card"
           v-for="project in projects" 
           :key="project.id"
+          v-scroll-animate="'fade-up'"
         >
           <div class="project-image">
             <img :src="project.image" :alt="project.title" />

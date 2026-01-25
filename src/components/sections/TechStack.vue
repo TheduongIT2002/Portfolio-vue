@@ -11,7 +11,7 @@
       <!-- Lưới các nhóm công nghệ -->
       <div class="stack-grid">
         <!-- Nhóm Frontend -->
-        <div class="stack-card">
+        <div class="stack-card" v-scroll-animate="'fade-up'">
           <h3 class="stack-title">Frontend</h3>
           <p class="stack-desc">
             Xây dựng giao diện người dùng hiện đại, responsive và tối ưu trải nghiệm trên nhiều thiết bị.
@@ -26,7 +26,7 @@
         </div>
 
         <!-- Nhóm Backend & API -->
-        <div class="stack-card">
+        <div class="stack-card" v-scroll-animate="'fade-up'">
           <h3 class="stack-title">Backend &amp; API</h3>
           <p class="stack-desc">
             Xử lý logic nghiệp vụ, xây dựng RESTful API và các chức năng bảo mật cơ bản.
@@ -40,7 +40,7 @@
         </div>
 
         <!-- Nhóm Database & DevOps -->
-        <div class="stack-card">
+        <div class="stack-card" v-scroll-animate="'fade-up'">
           <h3 class="stack-title">Database &amp; DevOps</h3>
           <p class="stack-desc">
             Thiết kế cấu trúc dữ liệu, tối ưu truy vấn và triển khai môi trường chạy ứng dụng.
@@ -54,7 +54,7 @@
         </div>
 
         <!-- Nhóm Tools & Workflow -->
-        <div class="stack-card">
+        <div class="stack-card" v-scroll-animate="'fade-up'">
           <h3 class="stack-title">Tools &amp; Workflow</h3>
           <p class="stack-desc">
             Các công cụ phục vụ phát triển, kiểm thử và cộng tác trong quá trình làm việc.
