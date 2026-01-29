@@ -1,5 +1,11 @@
 <template>
   <section id="home" class="hero">
+    <!-- Nền code-rain (canvas) -->
+    <DigitalCodeRain class="hero-rain" />
+
+    <!-- Gradient/mesh overlay để đúng tông xanh lam + tím nhạt -->
+    <div class="hero-mesh" aria-hidden="true"></div>
+
     <div class="hero-blob"></div>
     <div class="container hero-grid">
       <!-- Nội dung chính (animate khi load/scroll tới) -->
@@ -65,8 +71,11 @@
 </template>
 
 <script>
+import DigitalCodeRain from '../common/DigitalCodeRain.vue'
+
 export default {
-  name: 'Hero'
+  name: 'Hero',
+  components: { DigitalCodeRain }
 }
 </script>
 
@@ -77,10 +86,31 @@ export default {
   display: flex;
   align-items: center;
   padding: 120px 0 80px;
-  background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08), transparent 25%),
-              radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.06), transparent 22%),
-              var(--bg-color);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(59, 130, 246, 0.20), transparent 38%),
+    radial-gradient(circle at 85% 12%, rgba(167, 139, 250, 0.18), transparent 40%),
+    radial-gradient(circle at 60% 90%, rgba(56, 189, 248, 0.10), transparent 42%),
+    linear-gradient(180deg, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.92));
   overflow: hidden;
+}
+
+.hero-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+
+.hero-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(56, 189, 248, 0.10), transparent 40%),
+    radial-gradient(circle at 78% 22%, rgba(167, 139, 250, 0.10), transparent 44%),
+    linear-gradient(180deg, rgba(2, 6, 23, 0.35), rgba(2, 6, 23, 0.70));
 }
 
 .hero-blob {
@@ -89,11 +119,12 @@ export default {
   left: 50%;
   width: 600px;
   height: 600px;
-  background: rgba(56, 189, 248, 0.08);
+  background: rgba(56, 189, 248, 0.10);
   filter: blur(120px);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  z-index: 1;
 }
 
 .hero-grid {
@@ -102,7 +133,7 @@ export default {
   grid-template-columns: 1.2fr 1fr;
   gap: 3.5rem;
   align-items: center;
-  z-index: 1;
+  z-index: 2;
 }
 
 .hero-text {
@@ -207,11 +238,54 @@ export default {
   position: relative;
   width: 320px;
   height: 320px;
-  border-radius: 50%;
+  border-radius: 22px; /* vuông bo nhẹ cho hiện đại */
   /* Cho phép badge nổi ra ngoài nhưng vẫn giữ ảnh bo tròn */
   overflow: visible;
-  border: 4px solid rgba(51, 65, 85, 0.6);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(51, 65, 85, 0.55);
+  background: rgba(2, 6, 23, 0.55);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(148, 163, 184, 0.08);
+}
+
+/* Line chạy vòng border */
+.avatar-frame::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 24px;
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(56, 189, 248, 0) 0deg,
+      rgba(56, 189, 248, 0.95) 40deg,
+      rgba(167, 139, 250, 0.95) 80deg,
+      rgba(56, 189, 248, 0) 120deg,
+      rgba(56, 189, 248, 0) 360deg
+    );
+  filter: blur(0.2px);
+  opacity: 0.95;
+  animation: border-spin 3.2s linear infinite;
+  pointer-events: none;
+  /* tạo stroke mỏng (chừa phần ruột) */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  padding: 2px;
+}
+
+/* Glow nhẹ phía ngoài để nhìn “neon” hơn */
+.avatar-frame::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 30px;
+  background: radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.20), transparent 55%),
+              radial-gradient(circle at 80% 80%, rgba(167, 139, 250, 0.16), transparent 55%);
+  filter: blur(14px);
+  opacity: 0.75;
+  z-index: -1;
 }
 
 .avatar-img {
@@ -220,7 +294,7 @@ export default {
   object-fit: cover;
   filter: grayscale(0.2);
   transition: filter 0.5s ease;
-  border-radius: 50%;
+  border-radius: 20px;
   overflow: hidden;
 }
 
@@ -261,8 +335,8 @@ export default {
 .pulse-ring {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 22px;
+  border: 1px solid rgba(56, 189, 248, 0.18);
   animation: pulse 2.5s ease-in-out infinite;
 }
 
@@ -274,6 +348,10 @@ export default {
 @keyframes pulse {
   0% { transform: scale(1); opacity: 0.9; }
   100% { transform: scale(1.08); opacity: 0; }
+}
+
+@keyframes border-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Responsive */

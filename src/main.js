@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import './style.css'
 
+// Pinia - State Management (cần cài: npm install pinia)
+// import { createPinia } from 'pinia'
+// const pinia = createPinia()
+
 // Tạo ứng dụng Vue
 const app = createApp(App)
 
@@ -41,4 +45,6 @@ app.directive('scroll-animate', {
 })
 
 // Mount ứng dụng
-app.use(router).mount('#app')
+app.use(router)
+// app.use(pinia) // Uncomment sau khi cài Pinia
+app.mount('#app')
