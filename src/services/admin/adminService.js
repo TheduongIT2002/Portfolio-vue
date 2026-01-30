@@ -38,6 +38,18 @@ export const adminService = {
       throw error
     }
   },
+
+  // Lấy danh sách projects từ Laravel API public (CMS)
+  async getCmsProjects(page = 1) {
+    try {
+      const query = page ? `?page=${page}` : ''
+      const data = await apiRequest(`/projects${query}`)
+      return data
+    } catch (error) {
+      console.error('Error fetching CMS projects:', error)
+      throw error
+    }
+  },
   
   // Tạo project mới
   async createProject(projectData) {
