@@ -44,7 +44,8 @@
 
 // Hoặc sử dụng fetch API
 export const apiRequest = async (url, options = {}) => {
-  const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+  // Base URL mặc định cho Laravel API local
+  const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api'
   const token = localStorage.getItem('token')
 
   const defaultOptions = {
@@ -54,7 +55,11 @@ export const apiRequest = async (url, options = {}) => {
     }
   }
 
-  const response = await fetch(`${baseURL}${url}`, {
+  // Cho phép truyền absolute URL (http://...) mà không bị prefix baseURL
+  const isAbsolute = /^https?:\/\//i.test(url)
+  const finalUrl = isAbsolute ? url : `${baseURL}${url}`
+
+  const response = await fetch(finalUrl, {
     ...defaultOptions,
     ...options,
     headers: {

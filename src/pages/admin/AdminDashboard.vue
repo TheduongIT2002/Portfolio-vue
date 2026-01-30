@@ -75,7 +75,15 @@
 
       <!-- Table -->
       <div class="overflow-x-auto">
-        <table class="w-full text-left">
+        <!-- Loading / Error states -->
+        <div v-if="loading" class="px-6 py-10 text-center text-slate-400 text-sm font-medium">
+          Đang tải danh sách projects từ API...
+        </div>
+        <div v-else-if="errorMessage" class="px-6 py-10 text-center text-red-400 text-sm font-medium">
+          {{ errorMessage }}
+        </div>
+
+        <table v-else class="w-full text-left">
           <thead>
             <tr class="border-b border-border-dark text-[10px] uppercase tracking-widest text-slate-500 font-bold bg-slate-800/30">
               <th class="px-6 py-4 w-28 text-center">Thumbnail</th>
@@ -151,19 +159,22 @@
       <!-- Pagination -->
       <div class="px-6 py-5 border-t border-border-dark flex items-center justify-between bg-slate-800/10">
         <p class="text-xs text-slate-500 font-medium">
-          Showing <span class="text-white font-bold">1</span> to 
-          <span class="text-white font-bold">{{ filteredProjects.length }}</span> of 
-          <span class="text-white font-bold">{{ filteredProjects.length }}</span> results
+          Showing <span class="text-white font-bold">{{ pagination.from || 0 }}</span> to 
+          <span class="text-white font-bold">{{ pagination.to || 0 }}</span> of 
+          <span class="text-white font-bold">{{ pagination.total || 0 }}</span> results
         </p>
         <div class="flex gap-3">
           <button 
             class="px-4 py-2 border border-border-dark rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all" 
-            disabled
+            :disabled="loading || pagination.current_page <= 1"
+            @click="loadProjects(pagination.current_page - 1)"
           >
             Previous
           </button>
           <button 
-            class="px-4 py-2 border border-border-dark rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800 transition-all"
+            class="px-4 py-2 border border-border-dark rounded-xl text-xs font-bold text-slate-400 hover:bg-slate-800 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+            :disabled="loading || pagination.current_page >= pagination.last_page"
+            @click="loadProjects(pagination.current_page + 1)"
           >
             Next
           </button>
@@ -174,11 +185,11 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import StatCard from '../../components/admin/StatCard.vue'
 import TechBadge from '../../components/admin/TechBadge.vue'
-import { MOCK_PROJECTS } from '../../constants/admin'
 import { ProjectStatus } from '../../types/admin'
+import { adminService } from '../../services/admin/adminService'
 
 export default {
   name: 'AdminDashboard',
@@ -193,10 +204,61 @@ export default {
     }
   },
   setup(props) {
-    const projects = ref(MOCK_PROJECTS)
+    const projects = ref([])
+    const loading = ref(false)
+    const errorMessage = ref('')
+
     const statusFilter = ref('All')
     const sortBy = ref('date-newest')
     const statusFilters = ['All', 'Published', 'Draft']
+
+    const pagination = ref({
+      current_page: 1,
+      last_page: 1,
+      from: 0,
+      to: 0,
+      total: 0
+    })
+
+    const mapApiProject = (item) => {
+      return {
+        id: item.id,
+        name: item.title,
+        description: item.description || '',
+        thumbnail: item.image || 'https://via.placeholder.com/300x180?text=Project',
+        techStack: item.technologies || [],
+        status: item.is_active ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT,
+        createdAt: item.created_at || new Date().toISOString()
+      }
+    }
+
+    const loadProjects = async (page = 1) => {
+      try {
+        loading.value = true
+        errorMessage.value = ''
+        const res = await adminService.getCmsProjects(page)
+        const payload = res?.data || {}
+        const items = payload.data || []
+
+        projects.value = items.map(mapApiProject)
+        pagination.value = {
+          current_page: payload.current_page || 1,
+          last_page: payload.last_page || 1,
+          from: payload.from || 0,
+          to: payload.to || 0,
+          total: payload.total || items.length
+        }
+      } catch (error) {
+        console.error('Failed to load projects from API:', error)
+        errorMessage.value = 'Không thể tải danh sách projects từ API.'
+      } finally {
+        loading.value = false
+      }
+    }
+
+    onMounted(() => {
+      loadProjects(1)
+    })
 
     // Tính toán stats
     const stats = computed(() => {
@@ -241,14 +303,18 @@ export default {
       return filtered
     })
 
-    return {
-      projects,
-      statusFilter,
-      sortBy,
-      statusFilters,
-      stats,
-      filteredProjects
-    }
+      return {
+        projects,
+        statusFilter,
+        sortBy,
+        statusFilters,
+        stats,
+        filteredProjects,
+        pagination,
+        loading,
+        errorMessage,
+        loadProjects
+      }
   },
   methods: {
     handleCreateProject() {

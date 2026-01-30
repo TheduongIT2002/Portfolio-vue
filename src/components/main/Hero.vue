@@ -243,7 +243,7 @@ export default {
   overflow: visible;
   border: 1px solid rgba(51, 65, 85, 0.55);
   background: rgba(2, 6, 23, 0.55);
-  box-shadow:
+  box-shadow: 
     0 24px 80px rgba(0, 0, 0, 0.35),
     inset 0 0 0 1px rgba(148, 163, 184, 0.08);
 }

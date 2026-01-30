@@ -7,7 +7,7 @@
 </template>
 
 <script>
-// Bộ ký tự “techy” (nhẹ, hiện đại), đủ đa dạng để nhìn như mưa kỹ thuật số
+
 const DEFAULT_GLYPHS =
   "01ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$#@*+-=<>[]{}()/:;.,_";
 
