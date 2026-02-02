@@ -18,7 +18,9 @@
         <h1 class="hero-title">
           Hi, tôi là <span class="text-primary">Dương</span>.
           <br />
-          <span class="hero-subtitle-strong">Laravel &amp; Vue Architect.</span>
+          <span class="hero-subtitle-strong">
+            <span ref="typeTarget"></span>
+          </span>
         </h1>
 
         <p class="hero-desc">
@@ -72,10 +74,31 @@
 
 <script>
 import DigitalCodeRain from '../common/DigitalCodeRain.vue'
+import Typewriter from 't-writer.js'
 
 export default {
   name: 'Hero',
-  components: { DigitalCodeRain }
+  components: { DigitalCodeRain },
+  mounted() {
+    const target = this.$refs.typeTarget
+
+    const writer = new Typewriter(target, {
+      loop: true,
+      typeSpeed: 80,
+      deleteSpeed: 50,
+      typeColor: '#cbd5e1',
+      cursorColor: '#e5e7eb'
+    })
+
+    writer
+      .type('Laravel & Vue Architect.')
+      .rest(1600)
+      .remove(24)
+      .type('Fullstack Problem Solver.')
+      .rest(1600)
+      .clear()
+      .start()
+  }
 }
 </script>
 
