@@ -102,14 +102,14 @@
               <td class="px-6 py-5">
                 <div 
                   class="h-14 w-20 bg-cover bg-center rounded-lg border border-border-dark shadow-sm group-hover:scale-105 transition-transform" 
-                  :style="{ backgroundImage: `url('${project.thumbnail}')` }"
+                  :style="{ backgroundImage: `url('${project.image_url || project.thumbnail || project.image || ''}')` }"
                 />
               </td>
               
               <!-- Project Info -->
               <td class="px-6 py-5">
                 <div>
-                  <p class="text-sm font-bold text-white group-hover:text-primary transition-colors">{{ project.name }}</p>
+                  <p class="text-sm font-bold text-white group-hover:text-primary transition-colors">{{ project.title }}</p>
                   <p class="text-xs text-slate-500 mt-1 line-clamp-1 font-medium">{{ project.description }}</p>
                 </div>
               </td>
@@ -118,7 +118,7 @@
               <td class="px-6 py-5">
                 <div class="flex flex-wrap gap-2">
                   <TechBadge 
-                    v-for="tech in project.techStack" 
+                    v-for="tech in project.technologies" 
                     :key="tech" 
                     :tech="tech" 
                   />
@@ -181,6 +181,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Project Modal -->
+    <ProjectModal
+      :is-open="isModalOpen"
+      :project="selectedProject"
+      @close="handleModalClose"
+      @success="handleModalSuccess"
+    />
   </div>
 </template>
 
@@ -188,6 +196,7 @@
 import { computed, ref, onMounted } from 'vue'
 import StatCard from '../../components/admin/StatCard.vue'
 import TechBadge from '../../components/admin/TechBadge.vue'
+import ProjectModal from '../../components/admin/modals/ProjectModal.vue'
 import { ProjectStatus } from '../../types/admin'
 import { adminService } from '../../services/admin/adminService'
 
@@ -195,7 +204,8 @@ export default {
   name: 'AdminDashboard',
   components: {
     StatCard,
-    TechBadge
+    TechBadge,
+    ProjectModal
   },
   props: {
     searchQuery: {
@@ -220,15 +230,20 @@ export default {
       total: 0
     })
 
+    // Modal state
+    const isModalOpen = ref(false)
+    const selectedProject = ref(null)
+
     const mapApiProject = (item) => {
       return {
-        id: item.id,
-        name: item.title,
-        description: item.description || '',
-        thumbnail: item.image || 'https://via.placeholder.com/300x180?text=Project',
-        techStack: item.technologies || [],
+        // Giữ nguyên shape backend để hiển thị đúng mock:
+        // title, description, image, image_url, url, github_url, technologies, start_date, end_date, is_featured, sort_order, is_active...
+        ...item,
+        // Fallback fields cho UI hiện tại (nếu backend thiếu image_url)
+        thumbnail: item.image_url || item.image || '',
         status: item.is_active ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT,
-        createdAt: item.created_at || new Date().toISOString()
+        createdAt: item.created_at || new Date().toISOString(),
+        technologies: item.technologies || []
       }
     }
 
@@ -275,7 +290,7 @@ export default {
         // Lọc theo search query từ props
         const searchQuery = props.searchQuery || ''
         const matchesSearch = !searchQuery || 
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
           p.description.toLowerCase().includes(searchQuery.toLowerCase())
         
         // Lọc theo status
@@ -292,9 +307,9 @@ export default {
           case 'date-oldest':
             return new Date(a.createdAt) - new Date(b.createdAt)
           case 'name-asc':
-            return a.name.localeCompare(b.name)
+            return a.title.localeCompare(b.title)
           case 'name-desc':
-            return b.name.localeCompare(a.name)
+            return b.title.localeCompare(a.title)
           default:
             return 0
         }
@@ -313,21 +328,35 @@ export default {
         pagination,
         loading,
         errorMessage,
-        loadProjects
+        loadProjects,
+        isModalOpen,
+        selectedProject
       }
   },
   methods: {
     handleCreateProject() {
-      // TODO: Mở modal tạo project mới
-      console.log('Create new project')
+      this.selectedProject = null
+      this.isModalOpen = true
     },
     handleEdit(project) {
-      // TODO: Mở modal edit project
-      console.log('Edit project:', project)
+      // Pass trực tiếp data backend + ưu tiên image_url để preview đúng
+      this.selectedProject = {
+        ...project,
+        image: project.image_url || project.image || project.thumbnail || ''
+      }
+      this.isModalOpen = true
+    },
+    handleModalClose() {
+      this.isModalOpen = false
+      this.selectedProject = null
+    },
+    async handleModalSuccess() {
+      // Reload danh sách projects sau khi tạo/sửa thành công
+      await this.loadProjects(this.pagination.current_page)
     },
     handleDelete(project) {
       // TODO: Xác nhận và xóa project
-      if (confirm(`Bạn có chắc muốn xóa "${project.name}"?`)) {
+      if (confirm(`Bạn có chắc muốn xóa "${project.title}"?`)) {
         console.log('Delete project:', project)
       }
     }

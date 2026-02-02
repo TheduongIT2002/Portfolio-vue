@@ -45,12 +45,20 @@
 // Hoặc sử dụng fetch API
 export const apiRequest = async (url, options = {}) => {
   // Base URL mặc định cho Laravel API local
-  const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api'
+  // Khi dev, dùng Vite proxy (/api -> http://127.0.0.1:8000) để tránh CORS, đặc biệt với multipart/form-data.
+  // Có thể override bằng VITE_API_BASE_URL nếu deploy khác môi trường.
+  const baseURL = import.meta.env.VITE_API_BASE_URL || '/api'
   const token = localStorage.getItem('token')
+
+  // Kiểm tra xem body có phải là FormData không
+  const isFormData = options.body instanceof FormData
 
   const defaultOptions = {
     headers: {
-      'Content-Type': 'application/json',
+      // Luôn yêu cầu JSON để Laravel API không redirect về web routes (vd /admin, /login)
+      Accept: 'application/json',
+      // Không set Content-Type cho FormData, để browser tự set với boundary
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...(token && { Authorization: `Bearer ${token}` })
     }
   }
@@ -59,21 +67,46 @@ export const apiRequest = async (url, options = {}) => {
   const isAbsolute = /^https?:\/\//i.test(url)
   const finalUrl = isAbsolute ? url : `${baseURL}${url}`
 
-  const response = await fetch(finalUrl, {
-    ...defaultOptions,
-    ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers
-    }
-  })
+  // Nếu không phải FormData và body là object, stringify nó
+  let body = options.body
+  if (!isFormData && body && typeof body === 'object' && !(body instanceof FormData)) {
+    body = JSON.stringify(body)
+  }
+
+  let response
+  try {
+    response = await fetch(finalUrl, {
+      ...defaultOptions,
+      ...options,
+      body: body || options.body,
+      headers: {
+        ...defaultOptions.headers,
+        ...options.headers
+      }
+    })
+  } catch (err) {
+    throw err
+  }
 
   if (!response.ok) {
     if (response.status === 401) {
       localStorage.removeItem('token')
       window.location.href = '/login'
     }
-    throw new Error(`API Error: ${response.statusText}`)
+    
+    // Thử parse error message từ response
+    let errorMessage = response.statusText
+    let errorData = {}
+    try {
+      errorData = await response.json()
+      errorMessage = errorData.message || errorData.error || errorMessage
+    } catch (e) {
+      // Nếu không parse được JSON, dùng statusText
+    }
+    
+    const error = new Error(errorMessage)
+    error.response = { status: response.status, data: errorData }
+    throw error
   }
 
   return response.json()
