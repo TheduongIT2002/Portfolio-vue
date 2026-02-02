@@ -189,6 +189,20 @@
       @close="handleModalClose"
       @success="handleModalSuccess"
     />
+
+    <!-- Toast Notification -->
+    <transition name="fade">
+      <div
+        v-if="toast.visible"
+        class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-medium"
+        :class="toast.type === 'success' ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'"
+      >
+        <span class="material-symbols-outlined text-[20px]">
+          {{ toast.type === 'success' ? 'check_circle' : 'error' }}
+        </span>
+        <span>{{ toast.message }}</span>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -228,6 +242,13 @@ export default {
       from: 0,
       to: 0,
       total: 0
+    })
+
+    // Toast state
+    const toast = ref({
+      visible: false,
+      message: '',
+      type: 'success'
     })
 
     // Modal state
@@ -330,7 +351,8 @@ export default {
         errorMessage,
         loadProjects,
         isModalOpen,
-        selectedProject
+        selectedProject,
+        toast
       }
   },
   methods: {
@@ -350,16 +372,44 @@ export default {
       this.isModalOpen = false
       this.selectedProject = null
     },
-    async handleModalSuccess() {
+    async handleModalSuccess(payload) {
       // Reload danh sách projects sau khi tạo/sửa thành công
       await this.loadProjects(this.pagination.current_page)
+      if (payload && payload.message) {
+        this.showToast(payload.message, payload.type || 'success')
+      }
     },
     handleDelete(project) {
       // TODO: Xác nhận và xóa project
       if (confirm(`Bạn có chắc muốn xóa "${project.title}"?`)) {
         console.log('Delete project:', project)
       }
+    },
+    showToast(message, type = 'success') {
+      if (!this.toast) return
+      this.toast.message = message
+      this.toast.type = type
+      this.toast.visible = true
+
+      if (this._toastTimeout) {
+        clearTimeout(this._toastTimeout)
+      }
+      this._toastTimeout = setTimeout(() => {
+        this.toast.visible = false
+      }, 3000)
     }
   }
 }
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+</style>

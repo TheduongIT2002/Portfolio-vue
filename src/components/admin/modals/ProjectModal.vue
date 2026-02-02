@@ -504,6 +504,7 @@ export default {
         const shouldRemoveImage = this.removeExistingImage
 
         let payload
+        let response
 
         if (hasFileUpload || shouldRemoveImage) {
           // Sử dụng FormData khi có file upload hoặc cần xóa ảnh
@@ -556,13 +557,20 @@ export default {
 
         // Gọi API
         if (this.isEditMode) {
-          await adminService.updateProject(this.project.id, payload)
+          response = await adminService.updateProject(this.project.id, payload)
         } else {
-          await adminService.createProject(payload)
+          response = await adminService.createProject(payload)
         }
 
-        // Thành công - emit event để parent reload data
-        this.$emit('success')
+        // Thông báo thành công (để parent hiển thị toast)
+        const successMessage = response?.message || (this.isEditMode ? 'Cập nhật project thành công' : 'Tạo project thành công')
+
+        // Thành công - emit event để parent reload data + hiển thị toast
+        this.$emit('success', {
+          message: successMessage,
+          type: 'success',
+          data: response?.data || null
+        })
         this.handleClose()
       } catch (error) {
         console.error('Error saving project:', error)

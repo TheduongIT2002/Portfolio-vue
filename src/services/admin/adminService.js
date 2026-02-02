@@ -78,7 +78,7 @@ export const adminService = {
         return data
       } else {
         const data = await apiRequest(`/projects/${id}`, {
-          method: 'POST',
+          method: 'PUT',
           body: projectData
         })
         return data
