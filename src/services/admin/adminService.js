@@ -51,12 +51,12 @@ export const adminService = {
     }
   },
   
-  // Tạo project mới
+  // Tạo project mới (với FormData hoặc JSON)
   async createProject(projectData) {
     try {
-      const data = await apiRequest('/admin/projects', {
+      const data = await apiRequest('/projects', {
         method: 'POST',
-        body: JSON.stringify(projectData)
+        body: projectData instanceof FormData ? projectData : projectData
       })
       return data
     } catch (error) {
@@ -65,14 +65,24 @@ export const adminService = {
     }
   },
   
-  // Cập nhật project
+  // Cập nhật project (với FormData hoặc JSON)
   async updateProject(id, projectData) {
     try {
-      const data = await apiRequest(`/admin/projects/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(projectData)
-      })
-      return data
+      // Nếu là FormData, cần thêm _method=PUT cho Laravel
+      if (projectData instanceof FormData) {
+        projectData.append('_method', 'PUT')
+        const data = await apiRequest(`/projects/${id}`, {
+          method: 'POST',
+          body: projectData
+        })
+        return data
+      } else {
+        const data = await apiRequest(`/projects/${id}`, {
+          method: 'POST',
+          body: projectData
+        })
+        return data
+      }
     } catch (error) {
       console.error('Error updating project:', error)
       throw error
