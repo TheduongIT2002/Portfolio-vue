@@ -379,10 +379,21 @@ export default {
         this.showToast(payload.message, payload.type || 'success')
       }
     },
-    handleDelete(project) {
-      // TODO: Xác nhận và xóa project
+    async handleDelete(project) {
       if (confirm(`Bạn có chắc muốn xóa "${project.title}"?`)) {
-        console.log('Delete project:', project)
+        try {
+          const res = await adminService.deleteProject(project.id)
+          if (res && res.message) {
+            this.showToast(res.message, 'success')
+            await this.loadProjects(this.pagination.current_page)
+          } else {
+            this.showToast('Xóa project thất bại', 'error')
+          }
+        } catch (error) {
+          console.error('Error deleting project:', error)
+          const errorMessage = error.response?.data?.message || error.message || 'Có lỗi xảy ra khi xóa project'
+          this.showToast(errorMessage, 'error')
+        }
       }
     },
     showToast(message, type = 'success') {

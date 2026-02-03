@@ -5,8 +5,15 @@
         <h2 class="section-title">Dự án nổi bật</h2>
       </div>
       <p class="section-subtitle">Một vài sản phẩm tôi đã xây dựng gần đây.</p>
+
+      <div v-if="loading" class="text-center text-slate-400 mt-10">
+        Đang tải dự án nổi bật...
+      </div>
+      <div v-else-if="errorMessage" class="text-center text-red-400 mt-10">
+        {{ errorMessage }}
+      </div>
       
-      <div class="projects-grid">
+      <div v-else class="projects-grid">
         <div 
           class="project-card"
           v-for="project in projects" 
@@ -14,13 +21,13 @@
           v-scroll-animate="'fade-up'"
         >
           <div class="project-image">
-            <img :src="project.image" :alt="project.title" />
+            <img :src="project.image_url || project.image" :alt="project.title" />
             <div class="project-overlay"></div>
             <div class="project-actions">
-              <a v-if="project.github" :href="project.github" target="_blank" class="icon-btn" aria-label="GitHub">
+              <a v-if="project.github_url" :href="project.github_url" target="_blank" class="icon-btn" aria-label="GitHub">
                 <span class="material-symbols-outlined">code</span>
               </a>
-              <a v-if="project.demo" :href="project.demo" target="_blank" class="icon-btn" aria-label="Demo">
+              <a v-if="project.url" :href="project.url" target="_blank" class="icon-btn" aria-label="Demo">
                 <span class="material-symbols-outlined">open_in_new</span>
               </a>
             </div>
@@ -28,11 +35,11 @@
           <div class="project-content">
             <div class="project-top">
               <h3 class="project-title">{{ project.title }}</h3>
-              <span class="project-year">{{ project.year }}</span>
+              <span v-if="getProjectYear(project)" class="project-year">{{ getProjectYear(project) }}</span>
             </div>
             <p class="project-description">{{ project.description }}</p>
             <div class="project-tags">
-              <span class="project-tag" v-for="tag in project.tags" :key="tag">
+              <span class="project-tag" v-for="tag in (project.technologies || [])" :key="tag">
                 {{ tag }}
               </span>
             </div>
@@ -44,43 +51,49 @@
 </template>
 
 <script>
+import { projectService } from '../../services/main/projectService'
+
 export default {
   name: 'Projects',
   data() {
     return {
-      // Danh sách các dự án
-      projects: [
-        {
-          id: 1,
-          title: 'E-Commerce API',
-          description: 'REST API multi-vendor với auth JWT, cổng thanh toán và cập nhật tồn kho realtime.',
-          tags: ['Laravel', 'MySQL', 'Redis'],
-          demo: '#',
-          github: '#',
-          image: 'https://picsum.photos/seed/shop-api/600/400',
-          year: '2024'
-        },
-        {
-          id: 2,
-          title: 'Real-time Chat App',
-          description: 'Ứng dụng chat realtime với Vue 3, Laravel Echo, hỗ trợ channel, file sharing, presence.',
-          tags: ['Vue 3', 'Pusher', 'Tailwind'],
-          demo: '#',
-          github: '#',
-          image: 'https://picsum.photos/seed/chat-app/600/400',
-          year: '2023'
-        },
-        {
-          id: 3,
-          title: 'TaskFlow SaaS',
-          description: 'Quản lý dự án kiểu kanban, chấm công và báo cáo tự động, build với Inertia.js.',
-          tags: ['Laravel', 'Inertia', 'React'],
-          demo: '#',
-          github: '#',
-          image: 'https://picsum.photos/seed/saas/600/400',
-          year: '2023'
-        }
-      ]
+      projects: [],
+      loading: false,
+      errorMessage: ''
+    }
+  },
+  async mounted() {
+    await this.loadFeaturedProjects()
+  },
+  methods: {
+    async loadFeaturedProjects() {
+      try {
+        this.loading = true
+        this.errorMessage = ''
+
+        const res = await projectService.getFeaturedProjects()
+
+        // Hỗ trợ cả 2 dạng trả về: { data: [...] } hoặc { data: { data: [...] } }
+        const payload = res?.data
+        const items = Array.isArray(payload) ? payload : (payload?.data || [])
+
+        this.projects = (items || []).map((item) => ({
+          ...item,
+          technologies: item.technologies || [],
+          image_url: item.image_url || (item.image ? item.image : '')
+        }))
+      } catch (error) {
+        console.error('Failed to load featured projects:', error)
+        this.errorMessage = error.response?.data?.message || error.message || 'Không thể tải dự án nổi bật.'
+      } finally {
+        this.loading = false
+      }
+    },
+    getProjectYear(project) {
+      const date = project?.start_date || project?.created_at
+      if (!date) return ''
+      const str = date.toString()
+      return str.length >= 4 ? str.slice(0, 4) : ''
     }
   }
 }
