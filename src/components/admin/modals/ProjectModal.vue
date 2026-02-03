@@ -537,22 +537,22 @@ export default {
         } else {
           // Sử dụng JSON khi không có file upload
           payload = {
-            title: this.formData.title,
-            description: this.formData.description,
-            technologies: this.formData.technologies,
-            is_featured: this.formData.is_featured,
-            is_active: this.formData.is_active,
-            sort_order: this.formData.sort_order
-          }
+          title: this.formData.title,
+          description: this.formData.description,
+          technologies: this.formData.technologies,
+          is_featured: this.formData.is_featured,
+          is_active: this.formData.is_active,
+          sort_order: this.formData.sort_order
+        }
 
-          // Thêm các field optional nếu có giá trị
+        // Thêm các field optional nếu có giá trị
           if (!this.isEditMode && this.formData.image && !shouldRemoveImage) {
             payload.image = this.formData.image
           }
-          if (this.formData.url) payload.url = this.formData.url
-          if (this.formData.github_url) payload.github_url = this.formData.github_url
-          if (this.formData.start_date) payload.start_date = this.formData.start_date
-          if (this.formData.end_date) payload.end_date = this.formData.end_date
+        if (this.formData.url) payload.url = this.formData.url
+        if (this.formData.github_url) payload.github_url = this.formData.github_url
+        if (this.formData.start_date) payload.start_date = this.formData.start_date
+        if (this.formData.end_date) payload.end_date = this.formData.end_date
         }
 
         // Gọi API

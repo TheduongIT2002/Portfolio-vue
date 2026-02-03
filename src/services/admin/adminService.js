@@ -92,7 +92,7 @@ export const adminService = {
   // Xóa project
   async deleteProject(id) {
     try {
-      const data = await apiRequest(`/admin/projects/${id}`, {
+      const data = await apiRequest(`/projects/${id}`, {
         method: 'DELETE'
       })
       return data

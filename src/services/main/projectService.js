@@ -6,6 +6,17 @@
 import { apiRequest } from '../api'
 
 export const projectService = {
+  // Lấy danh sách projects nổi bật
+  async getFeaturedProjects() {
+    try {
+      const data = await apiRequest('/projects/featured/list')
+      return data
+    } catch (error) {
+      console.error('Error fetching featured projects:', error)
+      throw error
+    }
+  },
+
   // Lấy danh sách projects công khai
   async getPublicProjects() {
     try {

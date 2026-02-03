@@ -76,14 +76,14 @@ export const apiRequest = async (url, options = {}) => {
   let response
   try {
     response = await fetch(finalUrl, {
-      ...defaultOptions,
-      ...options,
-      body: body || options.body,
-      headers: {
-        ...defaultOptions.headers,
-        ...options.headers
-      }
-    })
+    ...defaultOptions,
+    ...options,
+    body: body || options.body,
+    headers: {
+      ...defaultOptions.headers,
+      ...options.headers
+    }
+  })
   } catch (err) {
     throw err
   }
@@ -98,8 +98,8 @@ export const apiRequest = async (url, options = {}) => {
     let errorMessage = response.statusText
     let errorData = {}
     try {
-      errorData = await response.json()
-      errorMessage = errorData.message || errorData.error || errorMessage
+        errorData = await response.json()
+        errorMessage = errorData.message || errorData.error || errorMessage
     } catch (e) {
       // Nếu không parse được JSON, dùng statusText
     }
@@ -109,5 +109,5 @@ export const apiRequest = async (url, options = {}) => {
     throw error
   }
 
-  return response.json()
+    return response.json()
 }
