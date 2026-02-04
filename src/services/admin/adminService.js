@@ -100,5 +100,52 @@ export const adminService = {
       console.error('Error deleting project:', error)
       throw error
     }
+  },
+
+  // Quản lý contacts
+  async getContacts(page = 1) {
+    try {
+      const query = page ? `?page=${page}` : ''
+      const data = await apiRequest(`/contacts/index/${query}`)
+      return data
+    } catch (error) {
+      console.error('Error fetching contacts:', error)
+      throw error
+    }
+  },
+
+  async getContactById(id) {
+    try {
+      const data = await apiRequest(`/contacts/${id}`)
+      return data
+    } catch (error) {
+      console.error('Error fetching contact:', error)
+      throw error
+    }
+  },
+
+  async updateContactStatus(id, status) {
+    try {
+      const data = await apiRequest(`/contacts/update-status/${id}`, {
+        method: 'PUT',
+        body: { status }
+      })
+      return data
+    } catch (error) {
+      console.error('Error updating contact status:', error)
+      throw error
+    }
+  },
+
+  async deleteContact(id) {
+    try {
+      const data = await apiRequest(`/contacts/destroy/${id}`, {
+        method: 'DELETE'
+      })
+      return data
+    } catch (error) {
+      console.error('Error deleting contact:', error)
+      throw error
+    }
   }
 }

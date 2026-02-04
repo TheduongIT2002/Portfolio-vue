@@ -55,22 +55,48 @@
             </div>
 
             <div class="form-group">
+              <input type="tel" id="phone" v-model="form.phone" placeholder=" " />
+              <label for="phone">Số điện thoại</label>
+            </div>
+
+            <div class="form-group">
               <textarea id="message" v-model="form.message" rows="4" required placeholder=" "></textarea>
               <label for="message">Tin nhắn *</label>
             </div>
 
-            <button type="submit" class="btn btn-primary submit-btn">
-              <span class="material-symbols-outlined">send</span>
-              Gửi tin nhắn
+            <button type="submit" class="btn btn-primary submit-btn" :disabled="submitting">
+              <span class="material-symbols-outlined" v-if="!submitting">send</span>
+              <span class="material-symbols-outlined spin" v-else>sync</span>
+              {{ submitting ? 'Đang gửi...' : 'Gửi tin nhắn' }}
             </button>
           </form>
         </div>
       </div>
+
+      <!-- Success Modal -->
+      <transition name="fade">
+        <div v-if="showSuccessModal" class="success-backdrop" @click.self="closeSuccessModal">
+          <div class="success-modal" v-scroll-animate="'fade-up'">
+            <div class="success-icon">
+              <span class="material-symbols-outlined">check_circle</span>
+            </div>
+            <h3 class="success-title">Đã gửi thành công</h3>
+            <p class="success-message">
+              {{ successMessage || 'Cảm ơn bạn đã liên hệ! Tôi sẽ phản hồi sớm nhất có thể.' }}
+            </p>
+            <button class="btn btn-primary success-btn" @click="closeSuccessModal">
+              Đóng
+            </button>
+          </div>
+        </div>
+      </transition>
     </div>
   </section>
 </template>
 
 <script>
+import { apiRequest } from '../../services/api'
+
 export default {
   name: 'Contact',
   data() {
@@ -80,8 +106,12 @@ export default {
         name: '',
         email: '',
         subject: '',
+        phone: '',
         message: ''
       },
+      submitting: false,
+      showSuccessModal: false,
+      successMessage: '',
       // Social icons
       socials: [
         { name: 'Github', icon: 'https://img.icons8.com/ios-filled/24/ffffff/github.png' },
@@ -92,18 +122,53 @@ export default {
   },
   methods: {
     // Xử lý submit form
-    handleSubmit() {
-      // TODO: Gửi dữ liệu đến backend Laravel
-      console.log('Form data:', this.form)
-      alert('Cảm ơn bạn đã liên hệ! Tôi sẽ phản hồi sớm nhất có thể.')
-      
-      // Reset form
-      this.form = {
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+    async handleSubmit() {
+      if (!this.form.name || !this.form.email || !this.form.subject || !this.form.message) {
+        alert('Vui lòng điền đầy đủ Họ tên, Email, Chủ đề và Tin nhắn.')
+        return
       }
+
+      this.submitting = true
+
+      try {
+        const payload = {
+          name: this.form.name,
+          email: this.form.email,
+          subject: this.form.subject,
+          phone: this.form.phone || '',
+          message: this.form.message,
+          source: 'portfolio',
+          status: 'new'
+        }
+
+        const res = await apiRequest('/contacts/store', {
+          method: 'POST',
+          body: payload
+        })
+
+        const msg = res?.message || 'Cảm ơn đã gửi thông tin cho em ạ! Em sẽ phản hồi sớm nhất có thể.'
+        this.successMessage = msg
+        this.showSuccessModal = true
+
+        // Reset form
+        this.form = {
+          name: '', 
+          email: '',
+          subject: '',
+          phone: '',
+          message: ''
+        }
+      } catch (error) {
+        console.error('Error submitting contact form:', error)
+        const msg = error.response?.data?.message || error.message || 'Có lỗi xảy ra khi gửi thông tin liên hệ.'
+        alert(msg)
+      } finally {
+        this.submitting = false
+      }
+    },
+    closeSuccessModal() {
+      this.showSuccessModal = false
+      this.successMessage = ''
     }
   }
 }
@@ -300,6 +365,94 @@ export default {
   justify-content: center;
   gap: 8px;
   font-weight: 700;
+}
+
+.submit-btn[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success Modal */
+.success-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1.5rem;
+}
+
+.success-modal {
+  max-width: 420px;
+  width: 100%;
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 18px;
+  padding: 1.8rem 1.6rem 1.6rem;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  box-shadow: 0 24px 80px rgba(16, 185, 129, 0.25);
+  text-align: center;
+}
+
+.success-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  margin: 0 auto 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.12);
+  color: rgb(16, 185, 129);
+}
+
+.success-icon .material-symbols-outlined {
+  font-size: 32px;
+}
+
+.success-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.success-message {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin-bottom: 1.2rem;
+}
+
+.success-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 /* Responsive */
