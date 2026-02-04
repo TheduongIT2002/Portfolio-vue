@@ -54,7 +54,7 @@ export default {
         '/admin/profile': 'profile',
         '/admin/skills': 'skills',
         '/admin/projects': 'projects',
-        '/admin/contact': 'contact'
+        '/admin/contacts': 'contact'
       }
       this.activeTab = routeMap[to.path] || 'projects'
     }
@@ -80,7 +80,7 @@ export default {
         profile: '/admin/profile',
         skills: '/admin/skills',
         projects: '/admin',
-        contact: '/admin/contact'
+        contact: '/admin/contacts'
       }
       const route = routeMap[tabId] || '/admin'
       if (this.$route.path !== route) {

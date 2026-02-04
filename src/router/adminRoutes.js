@@ -14,6 +14,16 @@ const adminRoutes = [
       requiresAuth: true,
       requiresAdmin: true
     }
+  },
+  {
+    path: 'contacts',
+    name: 'AdminContacts',
+    component: () => import('../pages/admin/AdminContacts.vue'),
+    meta: {
+      title: 'Quản lý liên hệ',
+      requiresAuth: true,
+      requiresAdmin: true
+    }
   }
   // Có thể thêm các routes khác sau này:
   // {
