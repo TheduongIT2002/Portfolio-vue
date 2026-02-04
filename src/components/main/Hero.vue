@@ -12,7 +12,7 @@
       <div class="hero-text" v-scroll-animate="'fade-up'">
         <div class="hero-badge">
           <span class="dot"></span>
-          Available for freelance work
+          Technical Solutions for Website Development
         </div>
 
         <h1 class="hero-title">
