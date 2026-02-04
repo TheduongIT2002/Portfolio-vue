@@ -24,6 +24,16 @@ const adminRoutes = [
       requiresAuth: true,
       requiresAdmin: true
     }
+  },
+  {
+    path: 'skills',
+    name: 'AdminTechStacks',
+    component: () => import('../pages/admin/AdminTechStacks.vue'),
+    meta: {
+      title: 'Tech Stack & Tools',
+      requiresAuth: true,
+      requiresAdmin: true
+    }
   }
   // Có thể thêm các routes khác sau này:
   // {

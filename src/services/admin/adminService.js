@@ -147,5 +147,65 @@ export const adminService = {
       console.error('Error deleting contact:', error)
       throw error
     }
+  },
+
+  // Quản lý tech stacks & tools
+  async getTechStacks(page = 1) {
+    try {
+      const query = page ? `?page=${page}` : ''
+      const data = await apiRequest(`/tech-stacks/index${query}`)
+      return data
+    } catch (error) {
+      console.error('Error fetching tech stacks:', error)
+      throw error
+    }
+  },
+
+  async createTechStack(payload) {
+    try {
+      const data = await apiRequest('/tech-stacks/store', {
+        method: 'POST',
+        body: payload
+      })
+      return data
+    } catch (error) {
+      console.error('Error creating tech stack:', error)
+      throw error
+    }
+  },
+
+  async getTechStackById(id) {
+    try {
+      const data = await apiRequest(`/tech-stacks/show/${id}`)
+      return data
+    } catch (error) {
+      console.error('Error fetching tech stack:', error)
+      throw error
+    }
+  },
+
+  async updateTechStack(id, payload) {
+    try {
+      const data = await apiRequest(`/tech-stacks/update/${id}`, {
+        method: 'PUT',
+        body: payload
+      })
+      return data
+    } catch (error) {
+      console.error('Error updating tech stack:', error)
+      throw error
+    }
+  },
+
+  async deleteTechStack(id) {
+    try {
+      const data = await apiRequest(`/tech-stacks/destroy/${id}`, {
+        method: 'DELETE'
+      })
+      return data
+    } catch (error) {
+      console.error('Error deleting tech stack:', error)
+      throw error
+    }
   }
 }
