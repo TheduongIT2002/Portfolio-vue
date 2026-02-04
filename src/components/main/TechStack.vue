@@ -8,63 +8,30 @@
         Những công nghệ và công cụ tôi sử dụng để xây dựng các ứng dụng web fullstack
       </p>
 
+      <!-- Trạng thái loading / error -->
+      <div v-if="loading" class="text-center text-slate-400 mt-6 text-sm">
+        Đang tải Tech Stack &amp; Tools...
+      </div>
+      <div v-else-if="errorMessage" class="text-center text-red-400 mt-6 text-sm">
+        {{ errorMessage }}
+      </div>
+
       <!-- Lưới các nhóm công nghệ -->
-      <div class="stack-grid">
-        <!-- Nhóm Frontend -->
-        <div class="stack-card" v-scroll-animate="'fade-up'">
-          <h3 class="stack-title">Frontend</h3>
+      <div v-else class="stack-grid">
+        <div
+          class="stack-card"
+          v-for="stack in techStacks"
+          :key="stack.id || stack.category"
+          v-scroll-animate="'fade-up'"
+        >
+          <h3 class="stack-title">{{ stack.category }}</h3>
           <p class="stack-desc">
-            Xây dựng giao diện người dùng hiện đại, responsive và tối ưu trải nghiệm trên nhiều thiết bị.
+            {{ stack.description }}
           </p>
           <ul class="stack-list">
-            <li>Vue.js, Vue Router</li>
-            <li>JavaScript (ES6+)</li>
-            <li>HTML5, CSS3</li>
-            <li>Tailwind CSS</li>
-            <li>Vite, Axios</li>
-          </ul>
-        </div>
-
-        <!-- Nhóm Backend & API -->
-        <div class="stack-card" v-scroll-animate="'fade-up'">
-          <h3 class="stack-title">Backend &amp; API</h3>
-          <p class="stack-desc">
-            Xử lý logic nghiệp vụ, xây dựng RESTful API và các chức năng bảo mật cơ bản.
-          </p>
-          <ul class="stack-list">
-            <li>PHP, Laravel</li>
-            <li>RESTful API, Authentication</li>
-            <li>Validation &amp; Authorization</li>
-            <li>File upload, xử lý form</li>
-          </ul>
-        </div>
-
-        <!-- Nhóm Database & DevOps -->
-        <div class="stack-card" v-scroll-animate="'fade-up'">
-          <h3 class="stack-title">Database &amp; DevOps</h3>
-          <p class="stack-desc">
-            Thiết kế cấu trúc dữ liệu, tối ưu truy vấn và triển khai môi trường chạy ứng dụng.
-          </p>
-          <ul class="stack-list">
-            <li>MySQL</li>
-            <li>Database design, migration</li>
-            <li>Basic optimization &amp; indexing</li>
-            <li>Docker (development)</li>
-          </ul>
-        </div>
-
-        <!-- Nhóm Tools & Workflow -->
-        <div class="stack-card" v-scroll-animate="'fade-up'">
-          <h3 class="stack-title">Tools &amp; Workflow</h3>
-          <p class="stack-desc">
-            Các công cụ phục vụ phát triển, kiểm thử và cộng tác trong quá trình làm việc.
-          </p>
-          <ul class="stack-list">
-            <li>Git, GitHub / GitLab</li>
-            <li>VS Code</li>
-            <li>Postman</li>
-            <li>Figma</li>
-            <li>NPM, Composer</li>
+            <li v-for="item in stack.items || []" :key="item">
+              {{ item }}
+            </li>
           </ul>
         </div>
       </div>
@@ -73,8 +40,51 @@
 </template>
 
 <script>
+import { apiRequest } from '../../services/api'
+
 export default {
-  name: 'TechStack'
+  name: 'TechStack',
+  data() {
+    return {
+      techStacks: [],
+      loading: false,
+      errorMessage: ''
+    }
+  },
+  async mounted() {
+    await this.loadTechStacks()
+  },
+  methods: {
+    async loadTechStacks() {
+      try {
+        this.loading = true
+        this.errorMessage = ''
+
+        const res = await apiRequest('/tech-stacks/index')
+        const raw = res?.data
+        let items = []
+        if (Array.isArray(raw)) {
+          items = raw
+        } else if (Array.isArray(raw?.data)) {
+          items = raw.data
+        } else {
+          items = []
+        }
+
+        this.techStacks = items.map((item) => ({
+          category: item.category,
+          description: item.description,
+          items: item.items || []
+        }))
+      } catch (error) {
+        console.error('Failed to load tech stacks for main page:', error)
+        this.errorMessage =
+          error.response?.data?.message || error.message || 'Không thể tải Tech Stack & Tools.'
+      } finally {
+        this.loading = false
+      }
+    }
+  }
 }
 </script>
 
