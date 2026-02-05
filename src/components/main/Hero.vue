@@ -12,7 +12,7 @@
       <div class="hero-text" v-scroll-animate="'fade-up'">
         <div class="hero-badge">
           <span class="dot"></span>
-          Available for freelance work
+          Technical Solutions for Website Development
         </div>
 
         <h1 class="hero-title">
@@ -59,11 +59,12 @@
             alt="Developer Portrait"
             class="avatar-img"
           />
+          <!-- Floating AI badges (thay cho Laravel & Vue) -->
           <div class="floating-badge badge-laravel">
-            <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/laravel/laravel-original.svg" alt="Laravel">
+            <img src="https://img.icons8.com/?size=100&id=pnUfrhjBRScY&format=png&color=000000" alt="AI">
           </div>
           <div class="floating-badge badge-vue">
-            <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/vuejs/vuejs-original.svg" alt="Vue">
+            <img src="https://img.icons8.com/?size=100&id=qJhh65nOkrqR&format=png&color=000000" alt="AI">
           </div>
           <div class="pulse-ring"></div>
         </div>
@@ -261,7 +262,7 @@ export default {
   position: relative;
   width: 320px;
   height: 320px;
-  border-radius: 22px; /* vuông bo nhẹ cho hiện đại */
+  border-radius: 18px; /* vuông bo nhẹ, hiện đại */
   /* Cho phép badge nổi ra ngoài nhưng vẫn giữ ảnh bo tròn */
   overflow: visible;
   border: 1px solid rgba(51, 65, 85, 0.55);
@@ -276,7 +277,7 @@ export default {
   content: '';
   position: absolute;
   inset: -2px;
-  border-radius: 24px;
+  border-radius: 20px;
   background:
     conic-gradient(
       from 0deg,
@@ -303,7 +304,7 @@ export default {
   content: '';
   position: absolute;
   inset: -10px;
-  border-radius: 30px;
+  border-radius: 24px;
   background: radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.20), transparent 55%),
               radial-gradient(circle at 80% 80%, rgba(167, 139, 250, 0.16), transparent 55%);
   filter: blur(14px);
@@ -358,7 +359,7 @@ export default {
 .pulse-ring {
   position: absolute;
   inset: 0;
-  border-radius: 22px;
+  border-radius: 18px;
   border: 1px solid rgba(56, 189, 248, 0.18);
   animation: pulse 2.5s ease-in-out infinite;
 }
@@ -421,6 +422,15 @@ export default {
   .avatar-frame {
     width: 260px;
     height: 260px;
+    border-radius: 999px; 
+  }
+
+  .avatar-img {
+    border-radius: 999px;
+  }
+
+  .pulse-ring {
+    border-radius: 999px;
   }
 }
 </style>

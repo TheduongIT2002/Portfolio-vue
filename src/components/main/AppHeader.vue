@@ -104,8 +104,9 @@ export default {
 }
 
 .header.scrolled {
-  background: rgba(15, 23, 42, 0.85);
-  border-bottom-color: rgba(51, 65, 85, 0.5);
+  
+  background: rgba(15, 23, 42, 0.65);
+  border-bottom-color: rgba(51, 65, 85, 0.35);
 }
 
 .navbar {
