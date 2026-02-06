@@ -6,6 +6,40 @@
 import { apiRequest } from '../api'
 
 export const adminService = {
+  // Thông tin cá nhân (profile)
+  async getPersonalInfo() {
+    try {
+      const data = await apiRequest('/personal-info/show')
+      return data
+    } catch (error) {
+      console.error('Error fetching personal info:', error)
+      throw error
+    }
+  },
+
+  async updatePersonalInfo(payload) {
+    try {
+      // Nếu có file (FormData), dùng POST + _method=PUT cho Laravel
+      let data
+      if (payload instanceof FormData) {
+        payload.append('_method', 'PUT')
+        data = await apiRequest('/personal-info/update', {
+          method: 'POST',
+          body: payload
+        })
+      } else {
+        data = await apiRequest('/personal-info/update', {
+          method: 'PUT',
+          body: payload
+        })
+      }
+      return data
+    } catch (error) {
+      console.error('Error updating personal info:', error)
+      throw error
+    }
+  },
+
   // Lấy thống kê dashboard
   async getDashboardStats() {
     try {

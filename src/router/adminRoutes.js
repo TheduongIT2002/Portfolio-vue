@@ -16,6 +16,16 @@ const adminRoutes = [
     }
   },
   {
+    path: 'profile',
+    name: 'AdminProfile',
+    component: () => import('../pages/admin/AdminProfile.vue'),
+    meta: {
+      title: 'Thông tin cá nhân',
+      requiresAuth: true,
+      requiresAdmin: true
+    }
+  },
+  {
     path: 'contacts',
     name: 'AdminContacts',
     component: () => import('../pages/admin/AdminContacts.vue'),
