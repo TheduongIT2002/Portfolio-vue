@@ -208,6 +208,13 @@
             <label class="block text-sm font-bold text-slate-300 mb-2">
               Social Links
             </label>
+            <p class="text-[11px] text-slate-500 mb-2">
+              Mỗi social link có: <span class="font-semibold text-slate-300">type</span> (github, linkedin...),
+              <span class="font-semibold text-slate-300">label</span>, <span class="font-semibold text-slate-300">url</span>
+              và <span class="font-semibold text-slate-300">url_icon</span>.
+              Bạn có thể lấy URL icon PNG/SVG từ thư viện như Icons8, ví dụ:
+              https://img.icons8.com/?size=100&id=62856&format=png&color=000000
+            </p>
             <div class="space-y-3">
               <div
                 v-for="(link, index) in form.social_links"
@@ -231,6 +238,12 @@
                   type="url"
                   class="flex-1 px-3 py-2 bg-slate-900/60 border border-border-dark rounded-lg text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="https://..."
+                />
+                <input
+                  v-model="link.url_icon"
+                  type="url"
+                  class="flex-1 px-3 py-2 bg-slate-900/60 border border-border-dark rounded-lg text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all"
+                  placeholder="URL icon (https://img.icons8.com/...)"
                 />
                 <button
                   type="button"
@@ -386,7 +399,8 @@ export default {
       this.form.social_links.push({
         type: '',
         label: '',
-        url: ''
+        url: '',
+        url_icon: ''
       })
     },
     removeSocialLink(index) {
@@ -457,6 +471,9 @@ export default {
             if (link.type) payload.append(`social_links[${index}][type]`, link.type)
             if (link.label) payload.append(`social_links[${index}][label]`, link.label)
             if (link.url) payload.append(`social_links[${index}][url]`, link.url)
+            if ('url_icon' in link) {
+              payload.append(`social_links[${index}][url_icon]`, link.url_icon || '')
+            }
           })
           if (this.cvFile) payload.append('cv_file', this.cvFile)
           // Key phổ biến cho upload avatar bên Laravel
@@ -473,7 +490,7 @@ export default {
             social_links: this.form.social_links
           }
         }
-
+         console.log(payload)
         const res = await adminService.updatePersonalInfo(payload)
         const msg = res?.message || 'Cập nhật thông tin cá nhân thành công'
         this.showToast(msg, 'success')
