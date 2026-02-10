@@ -16,7 +16,7 @@
         </div>
 
         <h1 class="hero-title">
-          Hi, tôi là <span class="text-primary">Dương</span>.
+          Hi, tôi là <span class="text-primary">{{ personalInfo?.full_name || 'Dương' }}</span>.
           <br />
           <span class="hero-subtitle-strong">
             <span ref="typeTarget"></span>
@@ -24,8 +24,7 @@
         </h1>
 
         <p class="hero-desc">
-          Xây dựng backend scalable và frontend tương tác. Ưu tiên clean code,
-          tối ưu hiệu năng và giải quyết bài toán phức tạp.
+          {{ personalInfo?.short_intro || 'Xây dựng backend scalable và frontend tương tác. Ưu tiên clean code, tối ưu hiệu năng và giải quyết bài toán phức tạp.' }}
         </p>
 
         <div class="hero-actions">
@@ -39,14 +38,17 @@
         </div>
 
         <div class="hero-social">
-          <a href="#" class="social-icon" aria-label="Github">
-            <img src="https://img.icons8.com/ios-filled/24/ffffff/github.png" alt="Github">
-          </a>
-          <a href="#" class="social-icon" aria-label="LinkedIn">
-            <img src="https://img.icons8.com/ios-filled/24/ffffff/linkedin.png" alt="LinkedIn">
-          </a>
-          <a href="#" class="social-icon" aria-label="Twitter">
-            <img src="https://img.icons8.com/ios-filled/24/ffffff/twitter.png" alt="Twitter">
+
+          <a 
+            v-for="social in personalInfo?.social_links || []" 
+            :key="social.type"
+            :href="social.url" 
+          
+            target="_blank"
+            class="social-icon"
+          
+          >
+            <img :src="social.url_icon" :alt="social.label">
           </a>
         </div>
       </div>
@@ -55,8 +57,8 @@
       <div class="hero-visual" v-scroll-animate="'fade-right'">
         <div class="avatar-frame">
           <img
-            src="https://picsum.photos/seed/dev-portrait/800/800"
-            alt="Developer Portrait"
+            :src="personalInfo?.avatar_url || 'https://picsum.photos/seed/dev-portrait/800/800'"
+            :alt="personalInfo?.full_name || 'Developer Portrait'"
             class="avatar-img"
           />
           <!-- Floating AI badges (thay cho Laravel & Vue) -->
@@ -76,12 +78,24 @@
 <script>
 import DigitalCodeRain from '../common/DigitalCodeRain.vue'
 import Typewriter from 't-writer.js'
+import { personalService } from '../../services/main/personalService'
 
 export default {
   name: 'Hero',
   components: { DigitalCodeRain },
-  mounted() {
+  data() {
+    return {
+      personalInfo: null,
+      loading: true
+    }
+  },
+  async mounted() {
+    // Load thông tin cá nhân từ API
+    await this.loadPersonalInfo()
+    
+    // Khởi tạo typewriter với slogan từ API
     const target = this.$refs.typeTarget
+    const slogan = this.personalInfo?.slogan || 'Laravel & Vue Architect.'
 
     const writer = new Typewriter(target, {
       loop: true,
@@ -92,13 +106,29 @@ export default {
     })
 
     writer
-      .type('Laravel & Vue Architect.')
+      .type(slogan)
       .rest(1600)
-      .remove(24)
+      .remove(slogan.length)
       .type('Fullstack Problem Solver.')
       .rest(1600)
       .clear()
       .start()
+  },
+  methods: {
+    async loadPersonalInfo() {
+      try {
+        this.loading = true
+        const response = await personalService.getPersonalInfo()
+        if (response.success && response.data) {
+          this.personalInfo = response.data
+        }
+      } catch (error) {
+        console.error('Error loading personal info:', error)
+        // Giữ giá trị mặc định nếu có lỗi
+      } finally {
+        this.loading = false
+      }
+    }
   }
 }
 </script>

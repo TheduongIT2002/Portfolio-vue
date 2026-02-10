@@ -17,21 +17,29 @@
           </p>
 
           <div class="social-row">
-            <a v-for="social in socials" :key="social.name" href="#" class="social-btn">
-              <img :src="social.icon" :alt="social.name" />
+            <a 
+              v-for="social in personalInfo?.social_links || []" 
+              :key="social.type"
+              :href="social.url" 
+              :aria-label="social.label"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-btn"
+            >
+              <img :src="social.url_icon" :alt="social.label" />
             </a>
           </div>
 
-          <div class="cv-card">
+          <div class="cv-card" v-if="personalInfo?.cv_url">
             <div class="qr-box">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/duong-dev" alt="QR CV">
+              <img :src="`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(personalInfo.cv_url)}`" alt="QR CV">
             </div>
             <div class="cv-info">
               <p class="cv-text">Quét QR để xem CV hoặc</p>
-              <button class="cv-btn">
+              <a :href="personalInfo.cv_url" target="_blank" rel="noopener noreferrer" class="cv-btn">
                 <span class="material-symbols-outlined">download</span>
                 Tải CV PDF
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -96,6 +104,7 @@
 
 <script>
 import { apiRequest } from '../../services/api'
+import { personalService } from '../../services/main/personalService'
 
 export default {
   name: 'Contact',
@@ -112,15 +121,28 @@ export default {
       submitting: false,
       showSuccessModal: false,
       successMessage: '',
-      // Social icons
-      socials: [
-        { name: 'Github', icon: 'https://img.icons8.com/ios-filled/24/ffffff/github.png' },
-        { name: 'LinkedIn', icon: 'https://img.icons8.com/ios-filled/24/ffffff/linkedin.png' },
-        { name: 'Twitter', icon: 'https://img.icons8.com/ios-filled/24/ffffff/twitter.png' }
-      ]
+      personalInfo: null,
+      loading: true
     }
   },
+  async mounted() {
+    await this.loadPersonalInfo()
+  },
   methods: {
+    async loadPersonalInfo() {
+      try {
+        this.loading = true
+        const response = await personalService.getPersonalInfo()
+        if (response.success && response.data) {
+          this.personalInfo = response.data
+        }
+      } catch (error) {
+        console.error('Error loading personal info:', error)
+        // Giữ giá trị mặc định nếu có lỗi
+      } finally {
+        this.loading = false
+      }
+    },
     // Xử lý submit form
     async handleSubmit() {
       if (!this.form.name || !this.form.email || !this.form.subject || !this.form.message) {
