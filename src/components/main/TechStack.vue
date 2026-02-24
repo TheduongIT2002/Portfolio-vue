@@ -60,7 +60,8 @@ export default {
         this.loading = true
         this.errorMessage = ''
 
-        const res = await apiRequest('/tech-stacks/index')
+        // Gọi API để lấy danh sách tech stacks
+        const res = await apiRequest('/tech-stacks/public/list')
         const raw = res?.data
         let items = []
         if (Array.isArray(raw)) {
