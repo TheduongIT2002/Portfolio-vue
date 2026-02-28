@@ -292,7 +292,7 @@ export default {
   position: relative;
   width: 320px;
   height: 320px;
-  border-radius: 18px; /* vuông bo nhẹ, hiện đại */
+  border-radius: 50%; /* hình tròn */
   /* Cho phép badge nổi ra ngoài nhưng vẫn giữ ảnh bo tròn */
   overflow: visible;
   border: 1px solid rgba(51, 65, 85, 0.55);
@@ -307,7 +307,7 @@ export default {
   content: '';
   position: absolute;
   inset: -2px;
-  border-radius: 20px;
+  border-radius: 50%;
   background:
     conic-gradient(
       from 0deg,
@@ -334,7 +334,7 @@ export default {
   content: '';
   position: absolute;
   inset: -10px;
-  border-radius: 24px;
+  border-radius: 50%;
   background: radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.20), transparent 55%),
               radial-gradient(circle at 80% 80%, rgba(167, 139, 250, 0.16), transparent 55%);
   filter: blur(14px);
@@ -348,7 +348,7 @@ export default {
   object-fit: cover;
   filter: grayscale(0.2);
   transition: filter 0.5s ease;
-  border-radius: 20px;
+  border-radius: 50%;
   overflow: hidden;
 }
 
@@ -377,19 +377,19 @@ export default {
 
 .badge-laravel {
   top: 12px;
-  right: 12px;
+  left: 12px;
 }
 
 .badge-vue {
   bottom: 20px;
-  left: 12px;
+  right: 12px;
   animation-delay: 0.9s;
 }
 
 .pulse-ring {
   position: absolute;
   inset: 0;
-  border-radius: 18px;
+  border-radius: 50%;
   border: 1px solid rgba(56, 189, 248, 0.18);
   animation: pulse 2.5s ease-in-out infinite;
 }
@@ -452,15 +452,15 @@ export default {
   .avatar-frame {
     width: 260px;
     height: 260px;
-    border-radius: 999px; 
+    border-radius: 50%;
   }
 
   .avatar-img {
-    border-radius: 999px;
+    border-radius: 50%;
   }
 
   .pulse-ring {
-    border-radius: 999px;
+    border-radius: 50%;
   }
 }
 </style>
