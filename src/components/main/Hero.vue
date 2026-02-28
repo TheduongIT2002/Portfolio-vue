@@ -292,7 +292,7 @@ export default {
   position: relative;
   width: 320px;
   height: 320px;
-  border-radius: 50%; /* hình tròn */
+  border-radius: 50%;
   /* Cho phép badge nổi ra ngoài nhưng vẫn giữ ảnh bo tròn */
   overflow: visible;
   border: 1px solid rgba(51, 65, 85, 0.55);
