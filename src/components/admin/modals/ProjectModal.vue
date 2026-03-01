@@ -143,11 +143,11 @@
               <!-- GitHub URL -->
               <div>
                 <label class="block text-sm font-bold text-slate-300 mb-2">
-                  GitHub URL
+                  GitHub URL <span class="text-slate-500">(Optional)</span>
                 </label>
                 <input
                   v-model="formData.github_url"
-                  type="url"
+                  type="text"
                   placeholder="https://github.com/username/repo"
                   class="w-full px-4 py-3 bg-slate-800/50 border border-border-dark rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 />
