@@ -32,8 +32,9 @@
             Xem dự án
             <span class="material-symbols-outlined icon-inline">arrow_forward</span>
           </a>
-          <a href="#contact" class="btn btn-outline hero-btn">
-            Liên hệ
+          <a :href="'tel:' + (personalInfo?.phone || '0123456789')" class="btn btn-outline hero-btn">
+            <span class="material-symbols-outlined icon-inline">phone</span>
+            Gọi ngay
           </a>
         </div>
 
