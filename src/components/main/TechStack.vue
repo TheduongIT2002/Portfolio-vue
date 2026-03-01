@@ -5,12 +5,12 @@
       <!-- Tiêu đề section -->
       <h2 class="section-title">Tech Stack &amp; Tools</h2>
       <p class="section-subtitle">
-        Những công nghệ và công cụ tôi sử dụng để xây dựng các ứng dụng web fullstack
+        Technologies and tools I use to build fullstack web applications
       </p>
 
       <!-- Trạng thái loading / error -->
       <div v-if="loading" class="text-center text-slate-400 mt-6 text-sm">
-        Đang tải Tech Stack &amp; Tools...
+        Loading Tech Stack &amp; Tools...
       </div>
       <div v-else-if="errorMessage" class="text-center text-red-400 mt-6 text-sm">
         {{ errorMessage }}
@@ -80,7 +80,7 @@ export default {
       } catch (error) {
         console.error('Failed to load tech stacks for main page:', error)
         this.errorMessage =
-          error.response?.data?.message || error.message || 'Không thể tải Tech Stack & Tools.'
+          error.response?.data?.message || error.message || 'Unable to load Tech Stack & Tools.'
       } finally {
         this.loading = false
       }

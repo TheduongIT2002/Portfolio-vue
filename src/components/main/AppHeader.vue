@@ -57,11 +57,11 @@ export default {
       isScrolled: false,
       // Danh sách link menu (đánh số kiểu template)
       navLinks: [
-        { id: 'home', label: 'Trang chủ', number: '01' },
-        { id: 'about', label: 'Giới thiệu', number: '02' },
+        { id: 'home', label: 'Home', number: '01' },
+        { id: 'about', label: 'About', number: '02' },
         { id: 'tech-stack', label: 'Tech Stack', number: '03' },
-        { id: 'projects', label: 'Dự án', number: '04' },
-        { id: 'contact', label: 'Liên hệ', number: '05' }
+        { id: 'projects', label: 'Projects', number: '04' },
+        { id: 'contact', label: 'Contact', number: '05' }
       ]
     }
   },

@@ -2,18 +2,18 @@
   <section id="contact" class="contact section">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Liên hệ</h2>
+        <h2 class="section-title">Contact</h2>
       </div>
       <p class="section-subtitle">
-        Luôn mở cho cơ hội mới. Cứ nhắn một dòng, tôi sẽ phản hồi sớm nhất.
+        Always open for new opportunities. Just drop a line, and I'll respond as soon as possible.
       </p>
       
       <div class="contact-grid">
         <!-- Cột thông tin + social (animate từ trái) -->
         <div class="contact-panel" v-scroll-animate="'fade-left'">
-          <div class="panel-title">Kết nối với tôi</div>
+          <div class="panel-title">Connect with me</div>
           <p class="panel-desc">
-            Email, mạng xã hội, hoặc tải CV bằng QR — chọn kênh bạn thích nhất.
+            Email, social media, or download CV via QR — choose your preferred channel.
           </p>
 
           <div class="social-row">
@@ -35,10 +35,10 @@
               <img :src="`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(personalInfo.cv_url)}`" alt="QR CV">
             </div>
             <div class="cv-info">
-              <p class="cv-text">Quét QR để xem CV hoặc</p>
+              <p class="cv-text">Scan QR to view CV or</p>
               <a :href="personalInfo.cv_url" target="_blank" rel="noopener noreferrer" class="cv-btn">
                 <span class="material-symbols-outlined">download</span>
-                Tải CV PDF
+                Download PDF CV
               </a>
             </div>
           </div>
@@ -49,7 +49,7 @@
           <form class="contact-form" @submit.prevent="handleSubmit">
             <div class="form-group">
               <input type="text" id="name" v-model="form.name" required placeholder=" " />
-              <label for="name">Họ tên *</label>
+              <label for="name">Name *</label>
             </div>
 
             <div class="form-group">
@@ -59,23 +59,23 @@
 
             <div class="form-group">
               <input type="text" id="subject" v-model="form.subject" required placeholder=" " />
-              <label for="subject">Chủ đề *</label>
+              <label for="subject">Subject *</label>
             </div>
 
             <div class="form-group">
               <input type="tel" id="phone" v-model="form.phone" placeholder=" " />
-              <label for="phone">Số điện thoại</label>
+              <label for="phone">Phone number</label>
             </div>
 
             <div class="form-group">
               <textarea id="message" v-model="form.message" rows="4" required placeholder=" "></textarea>
-              <label for="message">Tin nhắn *</label>
+              <label for="message">Message *</label>
             </div>
 
             <button type="submit" class="btn btn-primary submit-btn" :disabled="submitting">
               <span class="material-symbols-outlined" v-if="!submitting">send</span>
               <span class="material-symbols-outlined spin" v-else>sync</span>
-              {{ submitting ? 'Đang gửi...' : 'Gửi tin nhắn' }}
+              {{ submitting ? 'Sending...' : 'Send Message' }}
             </button>
           </form>
         </div>
@@ -88,12 +88,12 @@
             <div class="success-icon">
               <span class="material-symbols-outlined">check_circle</span>
             </div>
-            <h3 class="success-title">Đã gửi thành công</h3>
+            <h3 class="success-title">Sent Successfully</h3>
             <p class="success-message">
-              {{ successMessage || 'Cảm ơn bạn đã liên hệ! Tôi sẽ phản hồi sớm nhất có thể.' }}
+              {{ successMessage || 'Thank you for contacting me! I\'ll respond as soon as possible.' }}
             </p>
             <button class="btn btn-primary success-btn" @click="closeSuccessModal">
-              Đóng
+              Close
             </button>
           </div>
         </div>
@@ -146,7 +146,7 @@ export default {
     // Xử lý submit form
     async handleSubmit() {
       if (!this.form.name || !this.form.email || !this.form.subject || !this.form.message) {
-        alert('Vui lòng điền đầy đủ Họ tên, Email, Chủ đề và Tin nhắn.')
+        alert('Please fill in all required fields: Name, Email, Subject, and Message.')
         return
       }
 
@@ -168,7 +168,7 @@ export default {
           body: payload
         })
 
-        const msg = res?.message || 'Cảm ơn đã gửi thông tin cho em ạ! Em sẽ phản hồi sớm nhất có thể.'
+        const msg = res?.message || 'Thank you for reaching out! I\'ll respond as soon as possible.'
         this.successMessage = msg
         this.showSuccessModal = true
 
@@ -182,7 +182,7 @@ export default {
         }
       } catch (error) {
         console.error('Error submitting contact form:', error)
-        const msg = error.response?.data?.message || error.message || 'Có lỗi xảy ra khi gửi thông tin liên hệ.'
+        const msg = error.response?.data?.message || error.message || 'An error occurred while sending your message.'
         alert(msg)
       } finally {
         this.submitting = false
