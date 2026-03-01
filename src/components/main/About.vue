@@ -2,10 +2,10 @@
   <section id="about" class="about section">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Giới thiệu</h2>
+        <h2 class="section-title">About Me</h2>
       </div>
       <p class="section-subtitle">
-        Vài dòng về hành trình code và những công nghệ tôi đang sử dụng.
+        A few lines about my coding journey and the technologies I use.
       </p>
       
       <div class="about-grid">
@@ -13,14 +13,14 @@
         <div class="about-text" v-scroll-animate="'fade-left'">
           <h3 class="about-heading">Full-stack Developer</h3>
           <p>
-            Xin chào! Tôi là <strong class="text-strong">Dương</strong>, thích xây các sản phẩm web
-            giàu tương tác. Tôi tập trung vào code sạch, kiến trúc rõ ràng và trải nghiệm mượt.
+            Hello! I'm <strong class="text-strong">Dương</strong>, I like building interactive web products. 
+            I focus on clean code, clear architecture, and smooth user experiences.
           </p>
           <p>
-            Gần đây tôi làm nhiều với <span class="text-strong">Laravel</span> ở backend,
-            <span class="text-strong">Vue 3</span> ở frontend, kết hợp CI/CD và tối ưu hiệu năng.
+            Recently I've been working a lot with <span class="text-strong">Laravel</span> for backend,
+            <span class="text-strong">Vue 3</span> for frontend, combining CI/CD and performance optimization.
           </p>
-          <p class="about-note">Một vài kỹ năng đang dùng:</p>
+          <p class="about-note">Some skills I'm using:</p>
           <ul class="about-list">
             <li>PHP / Laravel 10+</li>
             <li>Vue 3 / Nuxt, Vite</li>

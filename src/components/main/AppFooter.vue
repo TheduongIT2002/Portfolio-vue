@@ -5,23 +5,23 @@
         <!-- Thông tin liên hệ -->
         <div class="footer-section">
           <h3>Portfolio</h3>
-          <p>Website giới thiệu cá nhân và các dự án đã thực hiện</p>
+          <p>Personal portfolio website showcasing my projects and skills</p>
         </div>
         
         <!-- Links nhanh -->
         <div class="footer-section">
-          <h4>Liên kết nhanh</h4>
+          <h4>Quick Links</h4>
           <ul>
-            <li><a href="#home">Trang chủ</a></li>
-            <li><a href="#about">Giới thiệu</a></li>
-            <li><a href="#projects">Dự án</a></li>
-            <li><a href="#contact">Liên hệ</a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
         
         <!-- Social media -->
         <div class="footer-section">
-          <h4>Theo dõi</h4>
+          <h4>Follow Me</h4>
           <div class="social-links">
             <a href="#" aria-label="Facebook">Facebook</a>
             <a href="#" aria-label="GitHub">GitHub</a>
@@ -32,7 +32,7 @@
       
       <!-- Copyright -->
       <div class="footer-bottom">
-        <p>&copy; {{ currentYear }} Portfolio. Tất cả quyền được bảo lưu.</p>
+        <p>&copy; {{ currentYear }} Portfolio. All rights reserved.</p>
       </div>
     </div>
   </footer>

@@ -16,7 +16,7 @@
         </div>
 
         <h1 class="hero-title">
-          Hi, tôi là <span class="text-primary">{{ personalInfo?.full_name || 'Dương' }}</span>.
+          Hi, I'm <span class="text-primary">{{ personalInfo?.full_name || 'Dương' }}</span>.
           <br />
           <span class="hero-subtitle-strong">
             <span ref="typeTarget"></span>
@@ -24,17 +24,17 @@
         </h1>
 
         <p class="hero-desc">
-          {{ personalInfo?.short_intro || 'Xây dựng backend scalable và frontend tương tác. Ưu tiên clean code, tối ưu hiệu năng và giải quyết bài toán phức tạp.' }}
+          {{ personalInfo?.short_intro || 'Building scalable backend and interactive frontend. Prioritizing clean code, performance optimization, and solving complex problems.' }}
         </p>
 
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary hero-btn">
-            Xem dự án
+            View Projects
             <span class="material-symbols-outlined icon-inline">arrow_forward</span>
           </a>
           <a :href="'tel:' + (personalInfo?.phone || '0123456789')" class="btn btn-outline hero-btn">
             <span class="material-symbols-outlined icon-inline">phone</span>
-            Gọi ngay
+            Call Now
           </a>
         </div>
 

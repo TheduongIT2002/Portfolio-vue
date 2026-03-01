@@ -2,12 +2,12 @@
   <section id="projects" class="projects section">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Dự án nổi bật</h2>
+        <h2 class="section-title">Featured Projects</h2>
       </div>
-      <p class="section-subtitle">Một vài sản phẩm tôi đã xây dựng gần đây.</p>
+      <p class="section-subtitle">Some projects I've built recently.</p>
 
       <div v-if="loading" class="text-center text-slate-400 mt-10">
-        Đang tải dự án nổi bật...
+        Loading featured projects...
       </div>
       <div v-else-if="errorMessage" class="text-center text-red-400 mt-10">
         {{ errorMessage }}
@@ -84,7 +84,7 @@ export default {
         }))
       } catch (error) {
         console.error('Failed to load featured projects:', error)
-        this.errorMessage = error.response?.data?.message || error.message || 'Không thể tải dự án nổi bật.'
+        this.errorMessage = error.response?.data?.message || error.message || 'Unable to load featured projects.'
       } finally {
         this.loading = false
       }
