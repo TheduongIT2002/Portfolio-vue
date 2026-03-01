@@ -32,23 +32,18 @@
             View Projects
             <span class="material-symbols-outlined icon-inline">arrow_forward</span>
           </a>
-          <a :href="'tel:' + (personalInfo?.phone || '0123456789')" class="btn btn-outline hero-btn">
+          <a :href="'tel:' + (personalInfo?.phone || '0349981685')" class="btn btn-outline hero-btn">
             <span class="material-symbols-outlined icon-inline">phone</span>
-            Call Now
+            {{ personalInfo?.phone || '0349981685' }}
           </a>
         </div>
-
         <div class="hero-social">
-
           <a 
             v-for="social in personalInfo?.social_links || []" 
             :key="social.type"
             :href="social.url" 
-          
             target="_blank"
-            class="social-icon"
-          
-          >
+            class="social-icon">
             <img :src="social.url_icon" :alt="social.label">
           </a>
         </div>
